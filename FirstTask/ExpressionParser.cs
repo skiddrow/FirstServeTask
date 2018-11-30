@@ -9,44 +9,99 @@ namespace FirstTask
 {
     class ExpressionParser
     {
-        const string NumberPattern = @"\d+(\.\d*)?";
-        const string AdditionPattern = @"\+";
-        const string SubtractionPattern = @"-";
-        const string MultiplicationPattern = @"\*";
-        const string DivisionPattern = @"/";
-        const string InvolutionPattern = @"\^";
-        const string VariablePattern = @"([A-Za-z][A-Za-z0-9]*)";
+        const string NumberPattern = @"^\d+(\.\d*)?";
+        const string AdditionPattern = @"^\+";
+        const string SubtractionPattern = @"^-";
+        const string MultiplicationPattern = @"^\*";
+        const string DivisionPattern = @"^/";
+        const string InvolutionPattern = @"^\^";
+        const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
 
-        public void Parse(string input)
+        public List<string> Parse(string input)
         {
+            List<string> splittedMembers = new List<string>();
             input = input.Replace(" ", "");
-            var splittedInput = input.Split(new char[] { '+', '-', '*', '/', '^' });
-            List<IExpression> listOfObjects = new List<IExpression>();
+            Regex numberRegEx = new Regex(NumberPattern);
+            Regex additionRegEx = new Regex(AdditionPattern);
+            Regex subtractionRegEx = new Regex(SubtractionPattern);
+            Regex multiplicationRegEx = new Regex(MultiplicationPattern);
+            Regex divisionRegEx = new Regex(DivisionPattern);
+            Regex involutionRegEx = new Regex(InvolutionPattern);
+            Regex variableRegEx = new Regex(VariablePattern); 
 
-            foreach (var item in splittedInput)
+            while (input.Length != 0)
             {
-                listOfObjects.Add(new NumberExpression(Double.Parse(item)));
-                input = input.Remove(0, item.Length);
-
-                if (input.Length != 0)
+                if (numberRegEx.IsMatch(input))
                 {
-                    var currentSymbol = input.Substring(0, 1);
-
-                    Regex regEx = new Regex(MultiplicationPattern);
-
-                    if (regEx.IsMatch(currentSymbol))
-                    {
-                        listOfObjects.Add(new MulExpression();
-                    }
-
-                    input = input.Remove(0, 1);
+                    string findedNumber = numberRegEx.Match(input).Value;
+                    splittedMembers.Add(findedNumber);
+                    input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
+                }
+                else if (additionRegEx.IsMatch(input))
+                {
+                    string findedNumber = additionRegEx.Match(input).Value;
+                    splittedMembers.Add(findedNumber);
+                    input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
+                }
+                else if (subtractionRegEx.IsMatch(input))
+                {
+                    string findedNumber = subtractionRegEx.Match(input).Value;
+                    splittedMembers.Add(findedNumber);
+                    input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
+                }
+                else if (multiplicationRegEx.IsMatch(input))
+                {
+                    string findedNumber = multiplicationRegEx.Match(input).Value;
+                    splittedMembers.Add(findedNumber);
+                    input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
+                }
+                else if (divisionRegEx.IsMatch(input))
+                {
+                    string findedNumber = divisionRegEx.Match(input).Value;
+                    splittedMembers.Add(findedNumber);
+                    input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
+                }
+                else if (involutionRegEx.IsMatch(input))
+                {
+                    string findedNumber = involutionRegEx.Match(input).Value;
+                    splittedMembers.Add(findedNumber);
+                    input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
+                }
+                else if (variableRegEx.IsMatch(input))
+                {
+                    string findedNumber = variableRegEx.Match(input).Value;
+                    splittedMembers.Add(findedNumber);
+                    input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
+                }
+                else
+                {
+                    Console.WriteLine("Input string has incorrect values!");
+                    return null;
                 }
             }
+
+            //foreach (var item in splittedMembers)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            return splittedMembers;
         }
+
+        //public List<IExpression> ConvertStringToExpression(List<string> inputMembers)
+        //{
+        //    List<IExpression> membersExpressions = new List<IExpression>();
+
+        //    foreach (var member in inputMembers)
+        //    {
+
+        //    }
+        //}
 
         public IExpression GetExpressionTree(List<IExpression> inputList)
         {
             int i = 1;
+            bool isOperationFinded = false;
 
             while (inputList.Count > 1)
             {
@@ -113,6 +168,8 @@ namespace FirstTask
 
                 i += 2;
             }
+
+            return null;
         }
 
         public static void BuildFrom<T>()
