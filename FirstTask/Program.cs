@@ -13,7 +13,7 @@ namespace FirstTask
             //Parser.ParseStringAndCompute("2+3-1");
 
             ExpressionParser parser = new ExpressionParser();
-            parser.Parse("12 + 6*5 -3^ 4 /y25+25");
+            parser.GetExpressionTree(parser.ConvertStringsToExpressions(parser.Parse("12 + 6*5 -3^ 4+25")));
 
             Console.ReadKey();
         }
