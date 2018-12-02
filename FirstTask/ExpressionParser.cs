@@ -17,6 +17,7 @@ namespace FirstTask
         const string DivisionPattern = @"^/";
         const string InvolutionPattern = @"^\^";
         const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
+        const string NonAlphanumericPattern = @"^\W";
         Regex numberRegEx = new Regex(NumberPattern);
         Regex additionRegEx = new Regex(AdditionPattern);
         Regex subtractionRegEx = new Regex(SubtractionPattern);
@@ -24,6 +25,7 @@ namespace FirstTask
         Regex divisionRegEx = new Regex(DivisionPattern);
         Regex involutionRegEx = new Regex(InvolutionPattern);
         Regex variableRegEx = new Regex(VariablePattern);
+        Regex nonAlphanumericRegEx = new Regex(NonAlphanumericPattern);
 
         public List<string> Parse(string input)
         {
@@ -82,12 +84,33 @@ namespace FirstTask
                 }
             }
 
-            //foreach (var item in splittedMembers)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
             return splittedMembers;
+        }
+
+        public bool IsCorrectExpression(List<string> expression)
+        {
+            if (expression == null)
+            {
+                return false;
+            }
+
+            int expressionLength = expression.Count;
+
+            if ((!numberRegEx.IsMatch(expression[0]) && !variableRegEx.IsMatch(expression[0])) || (!numberRegEx.IsMatch(expression[expressionLength - 1]) && !variableRegEx.IsMatch(expression[expressionLength - 1])))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < expressionLength - 1; i++)
+            {
+                //if (!((numberRegEx.IsMatch(expression[i]) || variableRegEx.IsMatch(expression[i])) && nonAlphanumericRegEx.IsMatch(expression[i + 1])))
+                if (nonAlphanumericRegEx.IsMatch(expression[i]) && nonAlphanumericRegEx.IsMatch(expression[i + 1]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public List<IExpression> ConvertStringsToExpressions(List<string> inputMembers)
@@ -151,12 +174,22 @@ namespace FirstTask
 
             for (int i = 1; i < n; i += 2)
             {
-                if (inputList[i] is MulExpression)
+                if (inputList[i] is MulExpression || inputList[i] is DivExpression)
                 {
-                    var mulExp = inputList[i] as MulExpression;
-                    mulExp.leftExpression = inputList[i - 1];
-                    mulExp.rightExpression = inputList[i + 1];
-                    inputList[i] = mulExp;
+                    dynamic exp;
+
+                    if (inputList[i] is MulExpression)
+                    {
+                        exp = inputList[i] as MulExpression;
+                    }
+                    else
+                    {
+                        exp = inputList[i] as DivExpression;
+                    }
+
+                    exp.leftExpression = inputList[i - 1];
+                    exp.rightExpression = inputList[i + 1];
+                    inputList[i] = exp;
                     inputList.RemoveAt(i + 1);
                     inputList.RemoveAt(i - 1);
                     i -= 2;
@@ -166,12 +199,22 @@ namespace FirstTask
 
             for (int i = 1; i < n; i += 2)
             {
-                if (inputList[i] is DivExpression)
+                if (inputList[i] is AddExpression || inputList[i] is SubExpression)
                 {
-                    var mulExp = inputList[i] as DivExpression;
-                    mulExp.leftExpression = inputList[i - 1];
-                    mulExp.rightExpression = inputList[i + 1];
-                    inputList[i] = mulExp;
+                    dynamic exp;
+
+                    if (inputList[i] is AddExpression)
+                    {
+                        exp = inputList[i] as AddExpression;
+                    }
+                    else
+                    {
+                        exp = inputList[i] as SubExpression;
+                    }
+
+                    exp.leftExpression = inputList[i - 1];
+                    exp.rightExpression = inputList[i + 1];
+                    inputList[i] = exp;
                     inputList.RemoveAt(i + 1);
                     inputList.RemoveAt(i - 1);
                     i -= 2;
@@ -179,42 +222,36 @@ namespace FirstTask
                 }
             }
 
-            for (int i = 1; i < n; i += 2)
+            if (inputList.Count == 1)
             {
-                if (inputList[i] is AddExpression)
-                {
-                    var mulExp = inputList[i] as AddExpression;
-                    mulExp.leftExpression = inputList[i - 1];
-                    mulExp.rightExpression = inputList[i + 1];
-                    inputList[i] = mulExp;
-                    inputList.RemoveAt(i + 1);
-                    inputList.RemoveAt(i - 1);
-                    i -= 2;
-                    n -= 2;
-                }
+                return inputList[0];
             }
-
-            for (int i = 1; i < n; i += 2)
+            else
             {
-                if (inputList[i] is SubExpression)
-                {
-                    var mulExp = inputList[i] as SubExpression;
-                    mulExp.leftExpression = inputList[i - 1];
-                    mulExp.rightExpression = inputList[i + 1];
-                    inputList[i] = mulExp;
-                    inputList.RemoveAt(i + 1);
-                    inputList.RemoveAt(i - 1);
-                    i -= 2;
-                    n -= 2;
-                }
+                return null;
             }
-
-            return null;
         }
 
-        public static void BuildFrom<T>(string formula)
+        public void BuildFrom<T>(string formula)
         {
-            //Expression.Lambda<T>()
+            var parsedString = Parse(formula);
+
+            if (!IsCorrectExpression(parsedString))
+            {
+                Console.WriteLine("Input expression has incorrect format");
+
+                return;
+            }
+
+            var expressionsList = ConvertStringsToExpressions(parsedString);
+            var expressionTree = GetExpressionTree(expressionsList);
+
+            var result = expressionTree.Compute();
+            Console.WriteLine(result);
+            var a = 5 + 3;
+            //var fuction = Expression.Lambda<T>(
+            //    Expression.
+            //    )
         }
     }
 }

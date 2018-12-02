@@ -13,8 +13,8 @@ namespace FirstTask
             //Parser.ParseStringAndCompute("2+3-1");
 
             ExpressionParser parser = new ExpressionParser();
-            parser.GetExpressionTree(parser.ConvertStringsToExpressions(parser.Parse("12 + 6*5 -3^ 4+25")));
-
+            var a = parser.Parse("12 + 6*5 -3^ 4+25");
+            parser.BuildFrom<int>("12 + 6*5 -3^ 4/3+25/2");
             Console.ReadKey();
         }
     }
