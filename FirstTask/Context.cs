@@ -8,27 +8,27 @@ namespace FirstTask
 {
     class Context
     {
-        Dictionary<string, double> vars;
+        Dictionary<string, double> Vars;
 
         public Context()
         {
-            vars = new Dictionary<string, double>();
+            Vars = new Dictionary<string, double>();
         }
 
         public double GetVar(string name)
         {
-            return vars[name];
+            return Vars[name];
         }
 
         public void AddVar(string name, double value)
         {
-            if (vars.ContainsKey(name))
+            if (Vars.ContainsKey(name))
             {
-                vars[name] = value;
+                Vars[name] = value;
             }
             else
             {
-                vars.Add(name, value);
+                Vars.Add(name, value);
             }
         }
     }

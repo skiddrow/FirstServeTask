@@ -20,9 +20,9 @@ namespace FirstTask
             this.rightExpression = rightExpression;
         }
 
-        public double Compute()
+        public double Compute(Context context)
         {
-            return leftExpression.Compute() + rightExpression.Compute();
+            return leftExpression.Compute(context) + rightExpression.Compute(context);
         }
     }
 }

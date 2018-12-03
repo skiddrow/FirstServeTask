@@ -13,9 +13,10 @@ input -> obj model(by parser) -> exp tree
 
 СДЕЛАТЬ
 _______________
-2) парсер не занимается упаковкой Expression'ов, этим занимается отделтьный класс(паттерн Visitor)
-3) подумать над тем, когда выражение начинается со знака -
-4) BuildFrom<Func<double, double, double>>(formula) => BuildFrom<T>(formula) => T = Func<double, double, double>
+-) парсер не занимается упаковкой Expression'ов, этим занимается отделтьный класс(паттерн Visitor)
+-) подумать над тем, когда выражение начинается со знака -
+-) BuildFrom<Func<double, double, double>>(formula) => BuildFrom<T>(formula) => T = Func<double, double, double>
+-) предусмотреть ситуацию с делением на 0
 
 СДЕЛАНО
 _______________

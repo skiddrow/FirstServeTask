@@ -8,16 +8,16 @@ namespace FirstTask
 {
     class NumberExpression : IExpression
     {
-        double value;
+        private double Value;
 
         public NumberExpression(double value)
         {
-            this.value = value;
+            this.Value = value;
         }
 
-        public double Compute()
+        public double Compute(Context context)
         {
-            return value;
+            return Value;
         }
     }
 }

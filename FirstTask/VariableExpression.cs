@@ -8,9 +8,17 @@ namespace FirstTask
 {
     class VariableExpression : IExpression
     {
-        public double Compute()
+        private string Name;
+
+        public VariableExpression(string name, Context context)
         {
-            throw new NotImplementedException();
+            Name = name;
+            context.AddVar(name, Double.NaN);
+        }
+
+        public double Compute(Context context)
+        {
+            return context.GetVar(Name);
         }
     }
 }

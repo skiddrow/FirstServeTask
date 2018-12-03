@@ -8,6 +8,6 @@ namespace FirstTask
 {
     interface IExpression
     {
-        double Compute();
+        double Compute(Context context);
     }
 }

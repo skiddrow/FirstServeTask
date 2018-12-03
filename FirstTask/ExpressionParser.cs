@@ -10,70 +10,77 @@ namespace FirstTask
 {
     class ExpressionParser
     {
-        const string NumberPattern = @"^\d+(\.\d*)?";
-        const string AdditionPattern = @"^\+";
-        const string SubtractionPattern = @"^-";
-        const string MultiplicationPattern = @"^\*";
-        const string DivisionPattern = @"^/";
-        const string InvolutionPattern = @"^\^";
-        const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
-        const string NonAlphanumericPattern = @"^\W";
-        Regex numberRegEx = new Regex(NumberPattern);
-        Regex additionRegEx = new Regex(AdditionPattern);
-        Regex subtractionRegEx = new Regex(SubtractionPattern);
-        Regex multiplicationRegEx = new Regex(MultiplicationPattern);
-        Regex divisionRegEx = new Regex(DivisionPattern);
-        Regex involutionRegEx = new Regex(InvolutionPattern);
-        Regex variableRegEx = new Regex(VariablePattern);
-        Regex nonAlphanumericRegEx = new Regex(NonAlphanumericPattern);
+        private Context Cntx;
+        private const string NumberPattern = @"^\d+(\.\d*)?";
+        private const string AdditionPattern = @"^\+";
+        private const string SubtractionPattern = @"^-";
+        private const string MultiplicationPattern = @"^\*";
+        private const string DivisionPattern = @"^/";
+        private const string InvolutionPattern = @"^\^";
+        private const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
+        private const string NonAlphanumericPattern = @"^\W";
+        private Regex NumberRegEx = new Regex(NumberPattern);
+        private Regex AdditionRegEx = new Regex(AdditionPattern);
+        private Regex SubtractionRegEx = new Regex(SubtractionPattern);
+        private Regex MultiplicationRegEx = new Regex(MultiplicationPattern);
+        private Regex DivisionRegEx = new Regex(DivisionPattern);
+        private Regex InvolutionRegEx = new Regex(InvolutionPattern);
+        private Regex VariableRegEx = new Regex(VariablePattern);
+        private Regex NonAlphanumericRegEx = new Regex(NonAlphanumericPattern);
 
-        public List<string> Parse(string input)
+        public ExpressionParser()
         {
+            Cntx = new Context();
+        }
+
+        private List<string> Parse(string input)
+        {
+            Cntx = new Context();
             List<string> splittedMembers = new List<string>();
             input = input.Replace(" ", "");
 
 
             while (input.Length != 0)
             {
-                if (numberRegEx.IsMatch(input))
+                if (NumberRegEx.IsMatch(input))
                 {
-                    string findedNumber = numberRegEx.Match(input).Value;
+                    string findedNumber = NumberRegEx.Match(input).Value;
                     splittedMembers.Add(findedNumber);
                     input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
                 }
-                else if (additionRegEx.IsMatch(input))
+                else if (AdditionRegEx.IsMatch(input))
                 {
-                    string findedNumber = additionRegEx.Match(input).Value;
+                    string findedNumber = AdditionRegEx.Match(input).Value;
                     splittedMembers.Add(findedNumber);
                     input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
                 }
-                else if (subtractionRegEx.IsMatch(input))
+                else if (SubtractionRegEx.IsMatch(input))
                 {
-                    string findedNumber = subtractionRegEx.Match(input).Value;
+                    string findedNumber = SubtractionRegEx.Match(input).Value;
                     splittedMembers.Add(findedNumber);
                     input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
                 }
-                else if (multiplicationRegEx.IsMatch(input))
+                else if (MultiplicationRegEx.IsMatch(input))
                 {
-                    string findedNumber = multiplicationRegEx.Match(input).Value;
+                    string findedNumber = MultiplicationRegEx.Match(input).Value;
                     splittedMembers.Add(findedNumber);
                     input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
                 }
-                else if (divisionRegEx.IsMatch(input))
+                else if (DivisionRegEx.IsMatch(input))
                 {
-                    string findedNumber = divisionRegEx.Match(input).Value;
+                    string findedNumber = DivisionRegEx.Match(input).Value;
                     splittedMembers.Add(findedNumber);
                     input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
                 }
-                else if (involutionRegEx.IsMatch(input))
+                else if (InvolutionRegEx.IsMatch(input))
                 {
-                    string findedNumber = involutionRegEx.Match(input).Value;
+                    string findedNumber = InvolutionRegEx.Match(input).Value;
                     splittedMembers.Add(findedNumber);
                     input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
                 }
-                else if (variableRegEx.IsMatch(input))
+                else if (VariableRegEx.IsMatch(input))
                 {
-                    string findedNumber = variableRegEx.Match(input).Value;
+                    string findedNumber = VariableRegEx.Match(input).Value;
                     splittedMembers.Add(findedNumber);
                     input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
                 }
@@ -87,7 +94,7 @@ namespace FirstTask
             return splittedMembers;
         }
 
-        public bool IsCorrectExpression(List<string> expression)
+        private bool IsCorrectExpression(List<string> expression)
         {
             if (expression == null)
             {
@@ -95,8 +102,10 @@ namespace FirstTask
             }
 
             int expressionLength = expression.Count;
+            bool isFirstMemeberIsNumberOrVariable = !NumberRegEx.IsMatch(expression[0]) && !VariableRegEx.IsMatch(expression[0]);
+            bool isLastMemeberIsNumberOrVariable = !NumberRegEx.IsMatch(expression[expressionLength - 1]) && !VariableRegEx.IsMatch(expression[expressionLength - 1]);
 
-            if ((!numberRegEx.IsMatch(expression[0]) && !variableRegEx.IsMatch(expression[0])) || (!numberRegEx.IsMatch(expression[expressionLength - 1]) && !variableRegEx.IsMatch(expression[expressionLength - 1])))
+            if (isFirstMemeberIsNumberOrVariable || isLastMemeberIsNumberOrVariable)
             {
                 return false;
             }
@@ -104,7 +113,7 @@ namespace FirstTask
             for (int i = 0; i < expressionLength - 1; i++)
             {
                 //if (!((numberRegEx.IsMatch(expression[i]) || variableRegEx.IsMatch(expression[i])) && nonAlphanumericRegEx.IsMatch(expression[i + 1])))
-                if (nonAlphanumericRegEx.IsMatch(expression[i]) && nonAlphanumericRegEx.IsMatch(expression[i + 1]))
+                if (NonAlphanumericRegEx.IsMatch(expression[i]) && NonAlphanumericRegEx.IsMatch(expression[i + 1]))
                 {
                     return false;
                 }
@@ -113,38 +122,37 @@ namespace FirstTask
             return true;
         }
 
-        public List<IExpression> ConvertStringsToExpressions(List<string> inputMembers)
+        private List<IExpression> ConvertStringsToExpressions(List<string> inputMembers)
         {
             List<IExpression> membersExpressions = new List<IExpression>();
 
             foreach (var member in inputMembers)
             {
-                if (numberRegEx.IsMatch(member))
+                if (NumberRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new NumberExpression(Double.Parse(member)));
                 }
-                else if (variableRegEx.IsMatch(member))
+                else if (VariableRegEx.IsMatch(member))
                 {
-                    // ДОДЕЛАТЬ
-                    membersExpressions.Add(new NumberExpression(Double.Parse(member)));
+                    membersExpressions.Add(new VariableExpression(member, Cntx));
                 }
-                else if (additionRegEx.IsMatch(member))
+                else if (AdditionRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new AddExpression());
                 }
-                else if (subtractionRegEx.IsMatch(member))
+                else if (SubtractionRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new SubExpression());
                 }
-                else if (multiplicationRegEx.IsMatch(member))
+                else if (MultiplicationRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new MulExpression());
                 }
-                else if (divisionRegEx.IsMatch(member))
+                else if (DivisionRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new DivExpression());
                 }
-                else if (involutionRegEx.IsMatch(member))
+                else if (InvolutionRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new InvolutionExpression());
                 }
@@ -153,10 +161,10 @@ namespace FirstTask
             return membersExpressions;
         }
 
-        public IExpression GetExpressionTree(List<IExpression> inputList)
+        private IExpression GetExpressionTree(List<IExpression> inputList)
         {
             int n = inputList.Count;
-
+            
             for (int i = 1; i < n; i += 2)
             {
                 if (inputList[i] is InvolutionExpression)
@@ -232,7 +240,7 @@ namespace FirstTask
             }
         }
 
-        public void BuildFrom<T>(string formula)
+        public void BuildFrom(string formula, Dictionary<string, double> variables)
         {
             var parsedString = Parse(formula);
 
@@ -246,12 +254,42 @@ namespace FirstTask
             var expressionsList = ConvertStringsToExpressions(parsedString);
             var expressionTree = GetExpressionTree(expressionsList);
 
-            var result = expressionTree.Compute();
+            if (variables != null)
+            {
+                SetContextVariables(variables);
+            }
+
+            var result = expressionTree.Compute(Cntx);
             Console.WriteLine(result);
-            var a = 5 + 3;
-            //var fuction = Expression.Lambda<T>(
-            //    Expression.
-            //    )
+        }
+
+        //public T BuildFrom<T>(string formula) where T : class
+        //{
+        //    var parsedString = Parse(formula);
+
+        //    if (!IsCorrectExpression(parsedString))
+        //    {
+        //        Console.WriteLine("Input expression has incorrect format");
+
+        //        return null;
+        //    }
+
+        //    var expressionsList = ConvertStringsToExpressions(parsedString);
+        //    var expressionTree = GetExpressionTree(expressionsList);
+        //    //var result = expressionTree.Compute(Cntx);
+        //    var param = Expression.Parameter(typeof(T));
+        //    var callExpression = Expression.Call(typeof(ExpressionParser).GetMethod("GetExpressionTree"), Expression.Constant(Cntx));
+
+
+        //    return Expression.Lambda<T>(Expression.Invoke(callExpression, param)).Compile();
+        //}
+
+        private void SetContextVariables(Dictionary<string, double> variables)
+        {
+            foreach (var variable in variables)
+            {
+                Cntx.AddVar(variable.Key, variable.Value);
+            }
         }
     }
 }
