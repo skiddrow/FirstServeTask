@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,16 +21,11 @@ namespace FirstTask
             this.rightExpression = rightExpression;
         }
 
-        public double Compute(Context context)
+        public Expression Compute()
         {
-            if (rightExpression.Compute(context) != 0)
-            {
-                return leftExpression.Compute(context) / rightExpression.Compute(context);
-            }
-            else
-            {
-                return double.NaN;
-            }
+            Expression divisionExpression = Expression.Divide(leftExpression.Compute(), rightExpression.Compute());
+
+            return divisionExpression;
         }
     }
 }

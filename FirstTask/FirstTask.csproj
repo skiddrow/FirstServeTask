@@ -43,19 +43,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddExpression.cs" />
-    <Compile Include="Context.cs">
+    <Compile Include="DivExpression.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DivExpression.cs" />
-    <Compile Include="ExpressionParser.cs" />
     <Compile Include="IExpression.cs" />
-    <Compile Include="InvolutionExpression.cs" />
-    <Compile Include="MulExpression.cs" />
+    <Compile Include="InvolutionExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LambdaBuilder.cs" />
+    <Compile Include="MulExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NumberExpression.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubExpression.cs" />
+    <Compile Include="StringParser.cs" />
+    <Compile Include="StringToExpressionConverter.cs" />
+    <Compile Include="SubExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="VariableExpression.cs" />
   </ItemGroup>
   <ItemGroup>

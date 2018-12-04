@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,17 +9,16 @@ namespace FirstTask
 {
     class VariableExpression : IExpression
     {
-        private string Name;
+        ParameterExpression Parameter;
 
-        public VariableExpression(string name, Context context)
+        public VariableExpression(ParameterExpression parameter)
         {
-            Name = name;
-            context.AddVar(name, Double.NaN);
+            Parameter = parameter;
         }
 
-        public double Compute(Context context)
+        public Expression Compute()
         {
-            return context.GetVar(Name);
+            return Parameter;
         }
     }
 }

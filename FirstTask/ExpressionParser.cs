@@ -10,7 +10,6 @@ namespace FirstTask
 {
     class ExpressionParser
     {
-        private Context Cntx;
         private const string NumberPattern = @"^\d+(\.\d*)?";
         private const string AdditionPattern = @"^\+";
         private const string SubtractionPattern = @"^-";
@@ -28,14 +27,8 @@ namespace FirstTask
         private Regex VariableRegEx = new Regex(VariablePattern);
         private Regex NonAlphanumericRegEx = new Regex(NonAlphanumericPattern);
 
-        public ExpressionParser()
-        {
-            Cntx = new Context();
-        }
-
         private List<string> Parse(string input)
         {
-            Cntx = new Context();
             List<string> splittedMembers = new List<string>();
             input = input.Replace(" ", "");
 
@@ -134,7 +127,7 @@ namespace FirstTask
                 }
                 else if (VariableRegEx.IsMatch(member))
                 {
-                    membersExpressions.Add(new VariableExpression(member, Cntx));
+                    membersExpressions.Add(new VariableExpression(member));
                 }
                 else if (AdditionRegEx.IsMatch(member))
                 {
@@ -259,7 +252,7 @@ namespace FirstTask
                 SetContextVariables(variables);
             }
 
-            var result = expressionTree.Compute(Cntx);
+            var result = expressionTree.Compute();
             Console.WriteLine(result);
         }
 
@@ -288,7 +281,7 @@ namespace FirstTask
         {
             foreach (var variable in variables)
             {
-                Cntx.AddVar(variable.Key, variable.Value);
+                //Cntx.AddVar(variable.Key, variable.Value);
             }
         }
     }

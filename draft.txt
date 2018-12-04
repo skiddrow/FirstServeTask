@@ -13,6 +13,11 @@ input -> obj model(by parser) -> exp tree
 
 СДЕЛАТЬ
 _______________
+-) убрать контекст, если он не нужен
+-) предусмотреть вариант, когда происходит деление на ноль
+-) разнести ExpressionParser на меньшие классы
+-) изменить механизм свертывания операций (вложенные циклы)
+-) дерево строится с помощью System.Expression, а не моими IExpression
 -) парсер не занимается упаковкой Expression'ов, этим занимается отделтьный класс(паттерн Visitor)
 -) подумать над тем, когда выражение начинается со знака -
 -) BuildFrom<Func<double, double, double>>(formula) => BuildFrom<T>(formula) => T = Func<double, double, double>

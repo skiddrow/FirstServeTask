@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,9 +21,11 @@ namespace FirstTask
             this.rightExpression = rightExpression;
         }
 
-        public double Compute(Context context)
+        public Expression Compute()
         {
-            return leftExpression.Compute(context) - rightExpression.Compute(context);
+            Expression subtractionExpression = Expression.Subtract(leftExpression.Compute(), rightExpression.Compute());
+
+            return subtractionExpression;
         }
     }
 }

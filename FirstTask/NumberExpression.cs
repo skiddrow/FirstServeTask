@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,9 +16,11 @@ namespace FirstTask
             this.Value = value;
         }
 
-        public double Compute(Context context)
+        public Expression Compute()
         {
-            return Value;
+            ConstantExpression constantExpression = Expression.Constant(Value);
+
+            return constantExpression;
         }
     }
 }
