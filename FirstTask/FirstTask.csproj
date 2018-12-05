@@ -43,10 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddExpression.cs" />
+    <Compile Include="BinaryArithmeticExpression.cs" />
     <Compile Include="DivExpression.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IExpression.cs" />
+    <Compile Include="IBasicExpression.cs" />
     <Compile Include="InvolutionExpression.cs">
       <SubType>Code</SubType>
     </Compile>

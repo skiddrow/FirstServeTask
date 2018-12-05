@@ -7,23 +7,18 @@ using System.Threading.Tasks;
 
 namespace FirstTask
 {
-    class MulExpression : IExpression
+    class MulExpression : BinaryArithmeticExpression
     {
-        public IExpression leftExpression { get; set; }
-        public IExpression rightExpression { get; set; }
-
         public MulExpression()
         { }
 
-        public MulExpression(IExpression leftExpression, IExpression rightExpression)
-        {
-            this.leftExpression = leftExpression;
-            this.rightExpression = rightExpression;
-        }
+        public MulExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
+            : base(leftExpression, rightExpression)
+        { }
 
-        public Expression Compute()
+        public override Expression Compute()
         {
-            Expression multiplicationExpression = Expression.Multiply(leftExpression.Compute(), rightExpression.Compute());
+            Expression multiplicationExpression = Expression.Multiply(LeftExpression.Compute(), RightExpression.Compute());
 
             return multiplicationExpression;
         }

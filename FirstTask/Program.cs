@@ -30,8 +30,9 @@ namespace FirstTask
 
             //var a = StringParser.Parse("12 + 6*5 -3^ 4+25");
             //Console.WriteLine(StringParser.IsCorrectExpression(a));
-
-            Func<double, double, double> res = (Func<double, double, double>)LambdaBuilder.BuildFrom<Func<double>>("y + 6*5 -3^ 4+h");
+            
+            //var res = (Func<double,double,double>)LambdaBuilder.BuildFrom<Func<double,double,double>>("y + 6*5 -3^ 4+h");
+            var res = LambdaBuilder.BuildFrom<Func<double, double, double>>("y + 6*5 -3^ 4+h");
             Console.WriteLine(res(12,25));
             Console.ReadKey();
         }

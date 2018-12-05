@@ -10,22 +10,6 @@ namespace FirstTask
 {
     static class StringToExpressionConverter
     {
-        private const string NumberPattern = @"^\d+(\.\d*)?";
-        private const string AdditionPattern = @"^\+";
-        private const string SubtractionPattern = @"^-";
-        private const string MultiplicationPattern = @"^\*";
-        private const string DivisionPattern = @"^/";
-        private const string InvolutionPattern = @"^\^";
-        private const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
-        private const string NonAlphanumericPattern = @"^\W";
-        private static Regex NumberRegEx = new Regex(NumberPattern);
-        private static Regex AdditionRegEx = new Regex(AdditionPattern);
-        private static Regex SubtractionRegEx = new Regex(SubtractionPattern);
-        private static Regex MultiplicationRegEx = new Regex(MultiplicationPattern);
-        private static Regex DivisionRegEx = new Regex(DivisionPattern);
-        private static Regex InvolutionRegEx = new Regex(InvolutionPattern);
-        private static Regex VariableRegEx = new Regex(VariablePattern);
-        private static Regex NonAlphanumericRegEx = new Regex(NonAlphanumericPattern);
         public static List<ParameterExpression> Parameters;
 
         static StringToExpressionConverter()
@@ -33,39 +17,39 @@ namespace FirstTask
             Parameters = new List<ParameterExpression>();
         }
 
-        public static List<IExpression> ConvertStringsToExpressions(List<string> inputMembers)
+        public static List<IBasicExpression> ConvertStringsToExpressions(List<string> inputMembers)
         {
-            List<IExpression> membersExpressions = new List<IExpression>();
+            List<IBasicExpression> membersExpressions = new List<IBasicExpression>();
 
             foreach (var member in inputMembers)
             {
-                if (NumberRegEx.IsMatch(member))
+                if (StringParser.NumberRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new NumberExpression(Double.Parse(member)));
                 }
-                else if (VariableRegEx.IsMatch(member))
+                else if (StringParser.VariableRegEx.IsMatch(member))
                 {
                     ParameterExpression parameter = Expression.Parameter(typeof(double), member);
                     membersExpressions.Add(new VariableExpression(parameter));
                     Parameters.Add(parameter);
                 }
-                else if (AdditionRegEx.IsMatch(member))
+                else if (StringParser.AdditionRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new AddExpression());
                 }
-                else if (SubtractionRegEx.IsMatch(member))
+                else if (StringParser.SubtractionRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new SubExpression());
                 }
-                else if (MultiplicationRegEx.IsMatch(member))
+                else if (StringParser.MultiplicationRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new MulExpression());
                 }
-                else if (DivisionRegEx.IsMatch(member))
+                else if (StringParser.DivisionRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new DivExpression());
                 }
-                else if (InvolutionRegEx.IsMatch(member))
+                else if (StringParser.InvolutionRegEx.IsMatch(member))
                 {
                     membersExpressions.Add(new InvolutionExpression());
                 }
@@ -82,8 +66,8 @@ namespace FirstTask
             }
 
             int expressionLength = expression.Count;
-            bool isFirstMemeberIsNumberOrVariable = !NumberRegEx.IsMatch(expression[0]) && !VariableRegEx.IsMatch(expression[0]);
-            bool isLastMemeberIsNumberOrVariable = !NumberRegEx.IsMatch(expression[expressionLength - 1]) && !VariableRegEx.IsMatch(expression[expressionLength - 1]);
+            bool isFirstMemeberIsNumberOrVariable = !StringParser.NumberRegEx.IsMatch(expression[0]) && !StringParser.VariableRegEx.IsMatch(expression[0]);
+            bool isLastMemeberIsNumberOrVariable = !StringParser.NumberRegEx.IsMatch(expression[expressionLength - 1]) && !StringParser.VariableRegEx.IsMatch(expression[expressionLength - 1]);
 
             if (isFirstMemeberIsNumberOrVariable || isLastMemeberIsNumberOrVariable)
             {
@@ -92,7 +76,7 @@ namespace FirstTask
 
             for (int i = 0; i < expressionLength - 1; i++)
             {
-                if (NonAlphanumericRegEx.IsMatch(expression[i]) && NonAlphanumericRegEx.IsMatch(expression[i + 1]))
+                if (StringParser.NonAlphanumericRegEx.IsMatch(expression[i]) && StringParser.NonAlphanumericRegEx.IsMatch(expression[i + 1]))
                 {
                     return false;
                 }

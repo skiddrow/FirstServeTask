@@ -9,17 +9,17 @@ namespace FirstTask
 {
     static class LambdaBuilder
     {
-        private static IExpression GetExpressionTree(List<IExpression> inputList)
+        private static IBasicExpression GetExpressionTree(List<IBasicExpression> inputList)
         {
             int n = inputList.Count;
-
+            
             for (int i = 1; i < n; i += 2)
             {
                 if (inputList[i] is InvolutionExpression)
                 {
                     var mulExp = inputList[i] as InvolutionExpression;
-                    mulExp.leftExpression = inputList[i - 1];
-                    mulExp.rightExpression = inputList[i + 1];
+                    mulExp.LeftExpression = inputList[i - 1];
+                    mulExp.RightExpression = inputList[i + 1];
                     inputList[i] = mulExp;
                     inputList.RemoveAt(i + 1);
                     inputList.RemoveAt(i - 1);
@@ -43,8 +43,8 @@ namespace FirstTask
                         exp = inputList[i] as DivExpression;
                     }
 
-                    exp.leftExpression = inputList[i - 1];
-                    exp.rightExpression = inputList[i + 1];
+                    exp.LeftExpression = inputList[i - 1];
+                    exp.RightExpression = inputList[i + 1];
                     inputList[i] = exp;
                     inputList.RemoveAt(i + 1);
                     inputList.RemoveAt(i - 1);
@@ -68,8 +68,8 @@ namespace FirstTask
                         exp = inputList[i] as SubExpression;
                     }
 
-                    exp.leftExpression = inputList[i - 1];
-                    exp.rightExpression = inputList[i + 1];
+                    exp.LeftExpression = inputList[i - 1];
+                    exp.RightExpression = inputList[i + 1];
                     inputList[i] = exp;
                     inputList.RemoveAt(i + 1);
                     inputList.RemoveAt(i - 1);
@@ -88,7 +88,7 @@ namespace FirstTask
             }
         }
 
-        public static Delegate BuildFrom<T>(string formula)
+        public static T BuildFrom<T>(string formula) where T : class
         {
             List<string> parsedString = StringParser.Parse(formula);
 
@@ -99,12 +99,10 @@ namespace FirstTask
                 return null;
             }
 
-            List<IExpression> expressionsList = StringToExpressionConverter.ConvertStringsToExpressions(parsedString);
-            IExpression expressionTree = GetExpressionTree(expressionsList);
-            LambdaExpression lambdaExpression = Expression.Lambda(expressionTree.Compute(),StringToExpressionConverter.Parameters);
-            var newLambda = lambdaExpression.Compile();
+            List<IBasicExpression> expressionsList = StringToExpressionConverter.ConvertStringsToExpressions(parsedString);
+            IBasicExpression expressionTree = GetExpressionTree(expressionsList);
 
-            return newLambda;
+            return Expression.Lambda<T>(expressionTree.Compute(), StringToExpressionConverter.Parameters).Compile();
         }
 
     }

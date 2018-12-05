@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace FirstTask
 {
-    class VariableExpression : IExpression
+    class VariableExpression : IBasicExpression
     {
-        ParameterExpression Parameter;
+        private ParameterExpression Parameter;
 
         public VariableExpression(ParameterExpression parameter)
         {

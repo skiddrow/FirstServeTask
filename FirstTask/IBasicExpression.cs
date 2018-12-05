@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FirstTask
 {
-    interface IExpression
+    interface IBasicExpression
     {
         Expression Compute();
     }

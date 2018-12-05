@@ -7,23 +7,18 @@ using System.Threading.Tasks;
 
 namespace FirstTask
 {
-    class InvolutionExpression : IExpression
+    class InvolutionExpression : BinaryArithmeticExpression
     {
-        public IExpression leftExpression { get; set; }
-        public IExpression rightExpression { get; set; }
-
         public InvolutionExpression()
         { }
 
-        public InvolutionExpression(IExpression leftExpression, IExpression rightExpression)
-        {
-            this.leftExpression = leftExpression;
-            this.rightExpression = rightExpression;
-        }
+        public InvolutionExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
+            : base(leftExpression, rightExpression)
+        { }
 
-        public Expression Compute()
+        public override Expression Compute()
         {
-            Expression involutionExpression = Expression.Power(leftExpression.Compute(), rightExpression.Compute());
+            Expression involutionExpression = Expression.Power(LeftExpression.Compute(), RightExpression.Compute());
 
             return involutionExpression;
         }

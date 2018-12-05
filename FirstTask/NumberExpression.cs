@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FirstTask
 {
-    class NumberExpression : IExpression
+    class NumberExpression : IBasicExpression
     {
         private double Value;
 

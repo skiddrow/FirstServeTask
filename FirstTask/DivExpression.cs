@@ -7,23 +7,18 @@ using System.Threading.Tasks;
 
 namespace FirstTask
 {
-    class DivExpression : IExpression
+    class DivExpression : BinaryArithmeticExpression
     {
-        public IExpression leftExpression { get; set; }
-        public IExpression rightExpression { get; set; }
-
         public DivExpression()
         { }
 
-        public DivExpression(IExpression leftExpression, IExpression rightExpression)
-        {
-            this.leftExpression = leftExpression;
-            this.rightExpression = rightExpression;
-        }
+        public DivExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
+            : base(leftExpression, rightExpression)
+        { }
 
-        public Expression Compute()
+        public override Expression Compute()
         {
-            Expression divisionExpression = Expression.Divide(leftExpression.Compute(), rightExpression.Compute());
+            Expression divisionExpression = Expression.Divide(LeftExpression.Compute(), RightExpression.Compute());
 
             return divisionExpression;
         }
