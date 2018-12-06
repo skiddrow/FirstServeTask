@@ -1,0 +1,9 @@
+Feature: outCollection - displaying any collection that implementing IEnumerable
+out - displaying variable 
+loop - loop operator(for analog)
+var - creating variable	
+	var real - double variable
+	var string - sttring variable
+	var boolean - bool variable
+begin - start of code block
+end - end of code block

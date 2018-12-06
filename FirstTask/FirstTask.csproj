@@ -42,29 +42,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddExpression.cs" />
-    <Compile Include="BinaryArithmeticExpression.cs" />
-    <Compile Include="DivExpression.cs">
+    <Compile Include="ExpressionParser\AddExpression.cs" />
+    <Compile Include="ExpressionParser\BinaryArithmeticExpression.cs" />
+    <Compile Include="ExpressionParser\DivExpression.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IBasicExpression.cs" />
-    <Compile Include="InvolutionExpression.cs">
+    <Compile Include="ExpressionParser\IBasicExpression.cs" />
+    <Compile Include="ExpressionParser\InvolutionExpression.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LambdaBuilder.cs" />
-    <Compile Include="MulExpression.cs">
+    <Compile Include="ExpressionParser\LambdaBuilder.cs" />
+    <Compile Include="ExpressionParser\MulExpression.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NumberExpression.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="ExpressionParser\NumberExpression.cs" />
+    <Compile Include="ExpressionParser\Parser.cs" />
+    <Compile Include="FileReader.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProgramParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringParser.cs" />
-    <Compile Include="StringToExpressionConverter.cs" />
-    <Compile Include="SubExpression.cs">
+    <Compile Include="ExpressionParser\StringParser.cs" />
+    <Compile Include="ExpressionParser\StringToExpressionConverter.cs" />
+    <Compile Include="ExpressionParser\SubExpression.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VariableExpression.cs" />
+    <Compile Include="ExpressionParser\VariableExpression.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -2,6 +2,7 @@
 с помощью регулярок для всех типов
 [Const, Plus, Const, Mult, Const, Power, Const, Minus, Const, Mult, Parameter]
 
+КЛАСС ACTIVATOR
 
 input -> obj model(by parser) -> exp tree
 
@@ -13,18 +14,19 @@ input -> obj model(by parser) -> exp tree
 
 СДЕЛАТЬ
 _______________
--) убрать контекст, если он не нужен
+-) создать пулреквесты в какую-то пустую ветку
 -) предусмотреть вариант, когда происходит деление на ноль
--) разнести ExpressionParser на меньшие классы
 -) изменить механизм свертывания операций (вложенные циклы)
--) дерево строится с помощью System.Expression, а не моими IExpression
--) парсер не занимается упаковкой Expression'ов, этим занимается отделтьный класс(паттерн Visitor)
 -) подумать над тем, когда выражение начинается со знака -
--) BuildFrom<Func<double, double, double>>(formula) => BuildFrom<T>(formula) => T = Func<double, double, double>
 -) предусмотреть ситуацию с делением на 0
 
 СДЕЛАНО
 _______________
++-) парсер не занимается упаковкой Expression'ов, этим занимается отделтьный класс(паттерн Visitor)
++) BuildFrom<Func<double, double, double>>(formula) => BuildFrom<T>(formula) => T = Func<double, double, double>
++) дерево строится с помощью System.Expression, а не моими IExpression
++) разнести ExpressionParser на меньшие классы
++) убрать контекст, если он не нужен
 +) парсим с помощью регулярок(каждая регулярка проверяется по началу строки)
 +) проверка на то, что в начале стоит число/переменная, а не знак и наличе подряд двух арифметических операторов
 
