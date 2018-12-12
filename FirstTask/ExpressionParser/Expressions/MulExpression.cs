@@ -10,6 +10,7 @@ namespace FirstTask
     class MulExpression : BinaryArithmeticExpression
     {
         public MulExpression()
+            : base()
         { }
 
         public MulExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)

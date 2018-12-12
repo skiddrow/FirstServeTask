@@ -18,6 +18,9 @@ namespace FirstTask
         public const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
         public const string NonAlphanumericPattern = @"^\W";
         public const string ArithmeticalSymbolPattern = @"^(\+|-|\*|\/|\^)";
+        public const string InBracketsPattern = @"\([^()]+\)";
+        public const string MinimizedBracketsPattern = @"^\#\d+";
+
         public static readonly Regex NumberRegEx = new Regex(NumberPattern);
         public static readonly Regex AdditionRegEx = new Regex(AdditionPattern);
         public static readonly Regex SubtractionRegEx = new Regex(SubtractionPattern);
@@ -27,12 +30,31 @@ namespace FirstTask
         public static readonly Regex VariableRegEx = new Regex(VariablePattern);
         public static readonly Regex NonAlphanumericRegEx = new Regex(NonAlphanumericPattern);
         public static readonly Regex ArithmeticalSymbolRegEx = new Regex(ArithmeticalSymbolPattern);
-        
-        public static List<string> Parse(string input)
+        public static readonly Regex InBracketsRegEx = new Regex(InBracketsPattern);
+        public static readonly Regex MinimizedBracketsRegEx = new Regex(MinimizedBracketsPattern);
+
+        public static List<object> Parse(string input)
         {
-            List<string> splittedMembers = new List<string>();
+            List<object> splittedMembers = new List<object>();
             input = input.Replace(" ", "");
 
+            while (InBracketsRegEx.IsMatch(input))
+            {
+                var matches = InBracketsRegEx.Matches(input);
+
+                foreach (var match in matches)
+                {
+                    string currentExpression = match.ToString();
+                    currentExpression = currentExpression.Substring(1, currentExpression.Length - 2);
+                    int expressionsCount = StringToExpressionConverter.InBracketsExpressions.Count;
+                    string expressionNumber = "#" + expressionsCount;
+                    StringToExpressionConverter.InBracketsExpressions.Add(expressionNumber, currentExpression);
+                    Console.WriteLine(currentExpression);
+                    int index = input.IndexOf(match.ToString());
+                    input = input.Remove(index, match.ToString().Length);
+                    input = input.Insert(index, expressionNumber);
+                }
+            }
 
             while (input.Length != 0)
             {
@@ -54,6 +76,12 @@ namespace FirstTask
                     splittedMembers.Add(findedSymbol);
                     input = input.Substring(findedSymbol.Length, input.Length - findedSymbol.Length);
                 }
+                //else if (MinimizedBracketsRegEx.IsMatch(input))
+                //{
+                //    string findedSymbol = MinimizedBracketsRegEx.Match(input).Value;
+                //    splittedMembers.Add(findedSymbol);
+                //    input = input.Substring(findedSymbol.Length, input.Length - findedSymbol.Length);
+                //}
                 else
                 {
                     Console.WriteLine("Input string has incorrect values!");
@@ -63,5 +91,30 @@ namespace FirstTask
 
             return splittedMembers;
         }
+
+        //public static void ParseInBracketsExpressions()
+        //{
+        //    if (StringToExpressionConverter.InBracketsExpressions.Count > 0)
+        //    {
+        //        var tempDictionary = new Dictionary<string, object>();
+        //        tempDictionary.Concat(StringToExpressionConverter.InBracketsExpressions);
+
+        //        foreach (var expression in StringToExpressionConverter.InBracketsExpressions)
+        //        {
+        //            var parsedExpression = StringParser.Parse(expression.Value as string);
+
+        //            if (parsedExpression == null)
+        //            {
+        //                return;
+        //            }
+
+        //            var expressionList = StringToExpressionConverter.ConvertStringsToExpressions(parsedExpression);
+        //            tempDictionary[expression.Key] = expressionList;
+        //        }
+
+        //        StringToExpressionConverter.InBracketsExpressions.Clear();
+        //        StringToExpressionConverter.InBracketsExpressions.Concat(tempDictionary);
+        //    }
+        //}
     }
 }

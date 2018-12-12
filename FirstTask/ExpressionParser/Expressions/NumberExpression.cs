@@ -9,7 +9,7 @@ namespace FirstTask
 {
     class NumberExpression : IBasicExpression
     {
-        private double Value;
+        protected double Value;
 
         public NumberExpression(double value)
         {

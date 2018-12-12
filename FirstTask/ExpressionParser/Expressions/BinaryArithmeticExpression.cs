@@ -11,9 +11,12 @@ namespace FirstTask
     {
         public IBasicExpression LeftExpression { get; set; }
         public IBasicExpression RightExpression { get; set; }
+        public int Priority { get; set; }
 
         public BinaryArithmeticExpression()
-        { }
+        {
+            Priority = 0;
+        }
 
         public BinaryArithmeticExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
         {

@@ -9,17 +9,17 @@ namespace FirstTask
 {
     static class LambdaBuilder
     {
-        private static IBasicExpression GetExpressionTree(List<IBasicExpression> inputList)
+        public static IBasicExpression GetExpressionTree(List<object> inputList)
         {
             int n = inputList.Count;
-            
+
             for (int i = 1; i < n; i += 2)
             {
                 if (inputList[i] is InvolutionExpression)
                 {
                     var mulExp = inputList[i] as InvolutionExpression;
-                    mulExp.LeftExpression = inputList[i - 1];
-                    mulExp.RightExpression = inputList[i + 1];
+                    mulExp.LeftExpression = inputList[i - 1] as IBasicExpression;
+                    mulExp.RightExpression = inputList[i + 1] as IBasicExpression;
                     inputList[i] = mulExp;
                     inputList.RemoveAt(i + 1);
                     inputList.RemoveAt(i - 1);
@@ -43,8 +43,8 @@ namespace FirstTask
                         exp = inputList[i] as DivExpression;
                     }
 
-                    exp.LeftExpression = inputList[i - 1];
-                    exp.RightExpression = inputList[i + 1];
+                    exp.LeftExpression = inputList[i - 1] as IBasicExpression;
+                    exp.RightExpression = inputList[i + 1] as IBasicExpression;
                     inputList[i] = exp;
                     inputList.RemoveAt(i + 1);
                     inputList.RemoveAt(i - 1);
@@ -68,8 +68,8 @@ namespace FirstTask
                         exp = inputList[i] as SubExpression;
                     }
 
-                    exp.LeftExpression = inputList[i - 1];
-                    exp.RightExpression = inputList[i + 1];
+                    exp.LeftExpression = inputList[i - 1] as IBasicExpression;
+                    exp.RightExpression = inputList[i + 1] as IBasicExpression;
                     inputList[i] = exp;
                     inputList.RemoveAt(i + 1);
                     inputList.RemoveAt(i - 1);
@@ -80,7 +80,7 @@ namespace FirstTask
 
             if (inputList.Count == 1)
             {
-                return inputList[0];
+                return inputList[0] as IBasicExpression;
             }
             else
             {
@@ -90,7 +90,7 @@ namespace FirstTask
 
         public static T BuildFrom<T>(string formula) where T : class
         {
-            List<string> parsedString = StringParser.Parse(formula);
+            List<object> parsedString = StringParser.Parse(formula);
 
             if (!StringToExpressionConverter.IsCorrectExpression(parsedString))
             {
@@ -99,8 +99,15 @@ namespace FirstTask
                 return null;
             }
 
-            List<IBasicExpression> expressionsList = StringToExpressionConverter.ConvertStringsToExpressions(parsedString);
+            List<object> expressionsList = StringToExpressionConverter.ConvertStringsToExpressions(parsedString);
             IBasicExpression expressionTree = GetExpressionTree(expressionsList);
+
+            if (expressionsList == null)
+            {
+                Console.WriteLine("Input expression has incorrect format");
+
+                return null;
+            }
 
             return Expression.Lambda<T>(expressionTree.Compute(), StringToExpressionConverter.Parameters).Compile();
         }

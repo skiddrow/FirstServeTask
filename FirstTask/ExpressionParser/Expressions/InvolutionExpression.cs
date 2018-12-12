@@ -10,6 +10,7 @@ namespace FirstTask
     class InvolutionExpression : BinaryArithmeticExpression
     {
         public InvolutionExpression()
+            : base()
         { }
 
         public InvolutionExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)

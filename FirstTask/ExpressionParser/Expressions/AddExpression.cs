@@ -10,7 +10,8 @@ namespace FirstTask
     class AddExpression : BinaryArithmeticExpression
     {
         public AddExpression()
-        { }
+            : base()
+        { } 
 
         public AddExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
             : base(leftExpression, rightExpression)

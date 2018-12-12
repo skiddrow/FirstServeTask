@@ -10,6 +10,7 @@ namespace FirstTask
     class DivExpression : BinaryArithmeticExpression
     {
         public DivExpression()
+            : base()
         { }
 
         public DivExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
