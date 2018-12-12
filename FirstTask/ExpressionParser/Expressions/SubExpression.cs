@@ -13,6 +13,11 @@ namespace FirstTask
             : base()
         { }
 
+        public SubExpression(int priority)
+        {
+            Priority = priority;
+        } 
+
         public SubExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
             : base(leftExpression, rightExpression)
         { }

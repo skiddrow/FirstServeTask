@@ -16,11 +16,12 @@ namespace FirstTask
         public const string DivisionPattern = @"^/";
         public const string InvolutionPattern = @"^\^";
         public const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
-        public const string NonAlphanumericPattern = @"^\W";
         public const string ArithmeticalSymbolPattern = @"^(\+|-|\*|\/|\^)";
-        public const string InBracketsPattern = @"\([^()]+\)";
-        public const string MinimizedBracketsPattern = @"^\#\d+";
+        public const string BracketsPattern = @"^(\(|\))";
 
+        public static int OperationPriority = 0;
+        public static int MaxOperationPriority = 0;
+        public static ExpressionType PreviousOperation = 0;
         public static readonly Regex NumberRegEx = new Regex(NumberPattern);
         public static readonly Regex AdditionRegEx = new Regex(AdditionPattern);
         public static readonly Regex SubtractionRegEx = new Regex(SubtractionPattern);
@@ -28,60 +29,71 @@ namespace FirstTask
         public static readonly Regex DivisionRegEx = new Regex(DivisionPattern);
         public static readonly Regex InvolutionRegEx = new Regex(InvolutionPattern);
         public static readonly Regex VariableRegEx = new Regex(VariablePattern);
-        public static readonly Regex NonAlphanumericRegEx = new Regex(NonAlphanumericPattern);
         public static readonly Regex ArithmeticalSymbolRegEx = new Regex(ArithmeticalSymbolPattern);
-        public static readonly Regex InBracketsRegEx = new Regex(InBracketsPattern);
-        public static readonly Regex MinimizedBracketsRegEx = new Regex(MinimizedBracketsPattern);
+        public static readonly Regex BracketsRegEx = new Regex(BracketsPattern);
 
-        public static List<object> Parse(string input)
+        public static List<IBasicExpression> Parse(string input)
         {
-            List<object> splittedMembers = new List<object>();
+            var splittedMembers = new List<IBasicExpression>();
             input = input.Replace(" ", "");
+            string findedValue = "";
 
-            while (InBracketsRegEx.IsMatch(input))
+            if (!IsBracketsOkay(input))
             {
-                var matches = InBracketsRegEx.Matches(input);
+                Console.WriteLine("Input string has incorrect count of brackets!");
 
-                foreach (var match in matches)
-                {
-                    string currentExpression = match.ToString();
-                    currentExpression = currentExpression.Substring(1, currentExpression.Length - 2);
-                    int expressionsCount = StringToExpressionConverter.InBracketsExpressions.Count;
-                    string expressionNumber = "#" + expressionsCount;
-                    StringToExpressionConverter.InBracketsExpressions.Add(expressionNumber, currentExpression);
-                    Console.WriteLine(currentExpression);
-                    int index = input.IndexOf(match.ToString());
-                    input = input.Remove(index, match.ToString().Length);
-                    input = input.Insert(index, expressionNumber);
-                }
+                return null;
             }
 
             while (input.Length != 0)
             {
                 if (NumberRegEx.IsMatch(input))
                 {
-                    string findedNumber = NumberRegEx.Match(input).Value;
-                    splittedMembers.Add(findedNumber);
-                    input = input.Substring(findedNumber.Length, input.Length - findedNumber.Length);
+                    findedValue = NumberRegEx.Match(input).Value;
+                    input = input.Substring(findedValue.Length, input.Length - findedValue.Length);
+                    PreviousOperation = ExpressionType.Number;
+                    var expression = StringToExpressionConverter.ConvertStringToExpression(findedValue, ExpressionType.Number);
+                    splittedMembers.Add(expression);
                 }
                 else if (VariableRegEx.IsMatch(input))
                 {
-                    string findedVariable = VariableRegEx.Match(input).Value;
-                    splittedMembers.Add(findedVariable);
-                    input = input.Substring(findedVariable.Length, input.Length - findedVariable.Length);
+                    findedValue = VariableRegEx.Match(input).Value;
+                    input = input.Substring(findedValue.Length, input.Length - findedValue.Length);
+                    PreviousOperation = ExpressionType.Variable;
+                    var expression = StringToExpressionConverter.ConvertStringToExpression(findedValue, ExpressionType.Variable);
+                    splittedMembers.Add(expression);
                 }
                 else if (ArithmeticalSymbolRegEx.IsMatch(input))
                 {
-                    string findedSymbol = ArithmeticalSymbolRegEx.Match(input).Value;
-                    splittedMembers.Add(findedSymbol);
-                    input = input.Substring(findedSymbol.Length, input.Length - findedSymbol.Length);
+                    findedValue = ArithmeticalSymbolRegEx.Match(input).Value;
+                    input = input.Substring(findedValue.Length, input.Length - findedValue.Length);
+
+                    if (PreviousOperation == ExpressionType.Operation)
+                    {
+                        Console.WriteLine("Input string cannot contains two arithmetical symbols in a row!");
+
+                        return null;
+                    }
+
+                    PreviousOperation = ExpressionType.Operation;
+                    var expression = StringToExpressionConverter.ConvertStringToExpression(findedValue, ExpressionType.Operation);
+                    splittedMembers.Add(expression);
                 }
-                //else if (MinimizedBracketsRegEx.IsMatch(input))
-                //{
-                //    string findedSymbol = MinimizedBracketsRegEx.Match(input).Value;
-                //    splittedMembers.Add(findedSymbol);
-                //    input = input.Substring(findedSymbol.Length, input.Length - findedSymbol.Length);
-                //}
+                else if (BracketsRegEx.IsMatch(input))
+                {
+                    findedValue = BracketsRegEx.Match(input).Value;
+                    input = input.Substring(findedValue.Length, input.Length - findedValue.Length);
+
+                    if (findedValue == "(")
+                    {
+                        OperationPriority++;
+                        MaxOperationPriority = OperationPriority > MaxOperationPriority ? OperationPriority : MaxOperationPriority;
+                    }
+                    else
+                    {
+                        OperationPriority--;
+                    }
+                }
                 else
                 {
                     Console.WriteLine("Input string has incorrect values!");
@@ -92,29 +104,34 @@ namespace FirstTask
             return splittedMembers;
         }
 
-        //public static void ParseInBracketsExpressions()
-        //{
-        //    if (StringToExpressionConverter.InBracketsExpressions.Count > 0)
-        //    {
-        //        var tempDictionary = new Dictionary<string, object>();
-        //        tempDictionary.Concat(StringToExpressionConverter.InBracketsExpressions);
+        public static bool IsBracketsOkay(string input)
+        {
+            int countOfOpeningBrackets = 0;
+            int countOfClosingBrackets = 0;
 
-        //        foreach (var expression in StringToExpressionConverter.InBracketsExpressions)
-        //        {
-        //            var parsedExpression = StringParser.Parse(expression.Value as string);
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '(')
+                {
+                    countOfOpeningBrackets++;
+                }
+                else if (input[i] == ')')
+                {
+                    countOfClosingBrackets++;
+                }
 
-        //            if (parsedExpression == null)
-        //            {
-        //                return;
-        //            }
+                if (countOfClosingBrackets > countOfOpeningBrackets)
+                {
+                    return false;
+                }
+            }
 
-        //            var expressionList = StringToExpressionConverter.ConvertStringsToExpressions(parsedExpression);
-        //            tempDictionary[expression.Key] = expressionList;
-        //        }
+            if (countOfClosingBrackets != countOfOpeningBrackets)
+            {
+                return false;
+            }
 
-        //        StringToExpressionConverter.InBracketsExpressions.Clear();
-        //        StringToExpressionConverter.InBracketsExpressions.Concat(tempDictionary);
-        //    }
-        //}
+            return true;
+        }
     }
 }

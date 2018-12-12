@@ -9,78 +9,81 @@ namespace FirstTask
 {
     static class LambdaBuilder
     {
-        public static IBasicExpression GetExpressionTree(List<object> inputList)
+        public static IBasicExpression GetExpressionTree(List<IBasicExpression> inputList)
         {
-            int n = inputList.Count;
-
-            for (int i = 1; i < n; i += 2)
+            for (int i = StringParser.MaxOperationPriority; i >= 0; i--)
             {
-                if (inputList[i] is InvolutionExpression)
+                int n = inputList.Count;
+
+                for (int j = 1; j < n; j += 2)
                 {
-                    var mulExp = inputList[i] as InvolutionExpression;
-                    mulExp.LeftExpression = inputList[i - 1] as IBasicExpression;
-                    mulExp.RightExpression = inputList[i + 1] as IBasicExpression;
-                    inputList[i] = mulExp;
-                    inputList.RemoveAt(i + 1);
-                    inputList.RemoveAt(i - 1);
-                    i -= 2;
-                    n -= 2;
+                    if (inputList[j] is InvolutionExpression && inputList[j].Priority == i)
+                    {
+                        var mulExp = inputList[j] as InvolutionExpression;
+                        mulExp.LeftExpression = inputList[j - 1];
+                        mulExp.RightExpression = inputList[j + 1];
+                        inputList[j] = mulExp;
+                        inputList.RemoveAt(j + 1);
+                        inputList.RemoveAt(j - 1);
+                        j -= 2;
+                        n -= 2;
+                    }
                 }
-            }
 
-            for (int i = 1; i < n; i += 2)
-            {
-                if (inputList[i] is MulExpression || inputList[i] is DivExpression)
+                for (int j = 1; j < n; j += 2)
                 {
-                    dynamic exp;
-
-                    if (inputList[i] is MulExpression)
+                    if ((inputList[j] is MulExpression || inputList[j] is DivExpression) && inputList[j].Priority == i)
                     {
-                        exp = inputList[i] as MulExpression;
-                    }
-                    else
-                    {
-                        exp = inputList[i] as DivExpression;
-                    }
+                        dynamic exp;
 
-                    exp.LeftExpression = inputList[i - 1] as IBasicExpression;
-                    exp.RightExpression = inputList[i + 1] as IBasicExpression;
-                    inputList[i] = exp;
-                    inputList.RemoveAt(i + 1);
-                    inputList.RemoveAt(i - 1);
-                    i -= 2;
-                    n -= 2;
+                        if (inputList[j] is MulExpression)
+                        {
+                            exp = inputList[j] as MulExpression;
+                        }
+                        else
+                        {
+                            exp = inputList[j] as DivExpression;
+                        }
+
+                        exp.LeftExpression = inputList[j - 1];
+                        exp.RightExpression = inputList[j + 1];
+                        inputList[j] = exp;
+                        inputList.RemoveAt(j + 1);
+                        inputList.RemoveAt(j - 1);
+                        j -= 2;
+                        n -= 2;
+                    }
                 }
-            }
 
-            for (int i = 1; i < n; i += 2)
-            {
-                if (inputList[i] is AddExpression || inputList[i] is SubExpression)
+                for (int j = 1; j < n; j += 2)
                 {
-                    dynamic exp;
-
-                    if (inputList[i] is AddExpression)
+                    if ((inputList[j] is AddExpression || inputList[j] is SubExpression) && inputList[j].Priority == i)
                     {
-                        exp = inputList[i] as AddExpression;
-                    }
-                    else
-                    {
-                        exp = inputList[i] as SubExpression;
-                    }
+                        dynamic exp;
 
-                    exp.LeftExpression = inputList[i - 1] as IBasicExpression;
-                    exp.RightExpression = inputList[i + 1] as IBasicExpression;
-                    inputList[i] = exp;
-                    inputList.RemoveAt(i + 1);
-                    inputList.RemoveAt(i - 1);
-                    i -= 2;
-                    n -= 2;
+                        if (inputList[j] is AddExpression)
+                        {
+                            exp = inputList[j] as AddExpression;
+                        }
+                        else
+                        {
+                            exp = inputList[j] as SubExpression;
+                        }
+
+                        exp.LeftExpression = inputList[j - 1];
+                        exp.RightExpression = inputList[j + 1];
+                        inputList[j] = exp;
+                        inputList.RemoveAt(j + 1);
+                        inputList.RemoveAt(j - 1);
+                        j -= 2;
+                        n -= 2;
+                    }
                 }
             }
 
             if (inputList.Count == 1)
             {
-                return inputList[0] as IBasicExpression;
+                return inputList[0];
             }
             else
             {
@@ -90,19 +93,18 @@ namespace FirstTask
 
         public static T BuildFrom<T>(string formula) where T : class
         {
-            List<object> parsedString = StringParser.Parse(formula);
+            var parsedString = StringParser.Parse(formula);
 
-            if (!StringToExpressionConverter.IsCorrectExpression(parsedString))
+            if (parsedString == null)
             {
                 Console.WriteLine("Input expression has incorrect format");
 
                 return null;
             }
 
-            List<object> expressionsList = StringToExpressionConverter.ConvertStringsToExpressions(parsedString);
-            IBasicExpression expressionTree = GetExpressionTree(expressionsList);
+            IBasicExpression expressionTree = GetExpressionTree(parsedString);
 
-            if (expressionsList == null)
+            if (expressionTree == null)
             {
                 Console.WriteLine("Input expression has incorrect format");
 

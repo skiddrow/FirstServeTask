@@ -11,6 +11,8 @@ namespace FirstTask
     {
         protected double Value;
 
+        public int Priority { get; set; }
+
         public NumberExpression(double value)
         {
             this.Value = value;

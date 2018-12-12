@@ -11,94 +11,51 @@ namespace FirstTask
     static class StringToExpressionConverter
     {
         public static List<ParameterExpression> Parameters;
-        //public static Dictionary<string, object> InBracketsExpressions;
 
         static StringToExpressionConverter()
         {
             Parameters = new List<ParameterExpression>();
-            //InBracketsExpressions = new Dictionary<string, object>();
         }
 
-        public static List<object> ConvertStringsToExpressions(List<object> inputMembers)
+        public static IBasicExpression ConvertStringToExpression(string inputValue, ExpressionType expressionType)
         {
-            //List<IBasicExpression> membersExpressions = new List<IBasicExpression>();
-            List<object> membersExpressions = new List<object>();
-
-            foreach (var member in inputMembers)
+            switch (expressionType)
             {
-                if (StringParser.NumberRegEx.IsMatch(member.ToString()))
-                {
-                    membersExpressions.Add(new NumberExpression(Double.Parse(member.ToString())));
-                }
-                else if (StringParser.VariableRegEx.IsMatch(member.ToString()))
-                {
-                    ParameterExpression parameter = Expression.Parameter(typeof(double), member.ToString());
-                    membersExpressions.Add(new VariableExpression(parameter));
+                case ExpressionType.Number:
+                    return new NumberExpression(Double.Parse(inputValue));
+                case ExpressionType.Variable:
+                    ParameterExpression parameter = Expression.Parameter(typeof(double), inputValue.ToString());
                     Parameters.Add(parameter);
-                }
-                else if (StringParser.AdditionRegEx.IsMatch(member.ToString()))
-                {
-                    membersExpressions.Add(new AddExpression());
-                }
-                else if (StringParser.SubtractionRegEx.IsMatch(member.ToString()))
-                {
-                    membersExpressions.Add(new SubExpression());
-                }
-                else if (StringParser.MultiplicationRegEx.IsMatch(member.ToString()))
-                {
-                    membersExpressions.Add(new MulExpression());
-                }
-                else if (StringParser.DivisionRegEx.IsMatch(member.ToString()))
-                {
-                    membersExpressions.Add(new DivExpression());
-                }
-                else if (StringParser.InvolutionRegEx.IsMatch(member.ToString()))
-                {
-                    membersExpressions.Add(new InvolutionExpression());
-                }
+
+                    return new VariableExpression(parameter);
+                case ExpressionType.Operation:
+                    if (StringParser.AdditionRegEx.IsMatch(inputValue))
+                    {
+                        return new AddExpression(StringParser.OperationPriority);
+                    }
+                    else if (StringParser.SubtractionRegEx.IsMatch(inputValue))
+                    {
+                        return new SubExpression(StringParser.OperationPriority);
+                    }
+                    else if (StringParser.MultiplicationRegEx.IsMatch(inputValue))
+                    {
+                        return new MulExpression(StringParser.OperationPriority);
+                    }
+                    else if (StringParser.DivisionRegEx.IsMatch(inputValue))
+                    {
+                        return new DivExpression(StringParser.OperationPriority);
+                    }
+                    else if (StringParser.InvolutionRegEx.IsMatch(inputValue))
+                    {
+                        return new InvolutionExpression(StringParser.OperationPriority);
+                    }
+
+                    break;
+                default:
+                    return null;
             }
 
-            return membersExpressions;
-            //return inputMembers;
-        }
-
-        public static bool IsCorrectExpression(List<object> expression)
-        {
-            if (expression == null)
-            {
-                return false;
-            }
-
-
-            int expressionLength = expression.Count;
-            bool isEdgeMembesrIsIncorrect = StringParser.ArithmeticalSymbolRegEx.IsMatch(expression[0].ToString()) || StringParser.ArithmeticalSymbolRegEx.IsMatch(expression[expressionLength - 1].ToString());
-
-            if (isEdgeMembesrIsIncorrect)
-            {
-                return false;
-            }
-
-            for (int validatorLoopCounter = 0; validatorLoopCounter < expressionLength - 1; validatorLoopCounter++)
-            {
-                if (StringParser.ArithmeticalSymbolRegEx.IsMatch(expression[validatorLoopCounter].ToString()) && StringParser.ArithmeticalSymbolRegEx.IsMatch(expression[validatorLoopCounter + 1].ToString()))
-                {
-                    return false;
-                }
-
-                if (StringParser.NumberRegEx.IsMatch(expression[validatorLoopCounter].ToString()) &&
-                    StringParser.VariableRegEx.IsMatch(expression[validatorLoopCounter + 1].ToString()))
-                {
-                    return false;
-                }
-
-                if (StringParser.VariableRegEx.IsMatch(expression[validatorLoopCounter].ToString()) &&
-                    StringParser.NumberRegEx.IsMatch(expression[validatorLoopCounter + 1].ToString()))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return null;
         }
     }
 }

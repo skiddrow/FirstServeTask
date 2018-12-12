@@ -29,14 +29,11 @@ namespace FirstTask
             //}
             #endregion
 
-            var listOfStrings = StringParser.Parse("h/2*(2+((5+7,5/2)+1)-1)+a3");
-            StringParser.ParseInBracketsExpressions();
-            Console.WriteLine("_____");
-            foreach (var item in listOfStrings)
-            {
-                Console.WriteLine(item);
-            }
-
+            //var listOfStrings = StringParser.IsBracketsOkay("h/2*(2+((5+7,5/2)+1)-1)+a3");
+            var res = LambdaBuilder.BuildFrom<Func<double, double, double>>("h/2*(2+((5+7,5/2)+1)-1)+a3");
+            Console.WriteLine(res(12, 20));
+            var a = Math.Truncate(21 + 5.6 + Math.Pow(2, 50) - (2 - 10));
+            //Console.WriteLine(listOfStrings);
             Console.ReadKey();
         }
     }

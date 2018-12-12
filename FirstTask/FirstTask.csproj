@@ -42,12 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressionParser\Expressions\AbsExpression.cs" />
     <Compile Include="ExpressionParser\Expressions\AddExpression.cs" />
     <Compile Include="ExpressionParser\Expressions\BinaryArithmeticExpression.cs" />
     <Compile Include="ExpressionParser\Expressions\DivExpression.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExpressionParser\Infrastructure.cs" />
     <Compile Include="ExpressionParser\Interfaces\IBasicExpression.cs" />
     <Compile Include="ExpressionParser\Expressions\InvolutionExpression.cs">
       <SubType>Code</SubType>

@@ -13,6 +13,11 @@ namespace FirstTask
             : base()
         { }
 
+        public InvolutionExpression(int priority)
+        {
+            Priority = priority;
+        } 
+
         public InvolutionExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
             : base(leftExpression, rightExpression)
         { }

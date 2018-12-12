@@ -11,6 +11,8 @@ namespace FirstTask
     {
         private ParameterExpression Parameter;
 
+        public int Priority { get; set; }
+
         public VariableExpression(ParameterExpression parameter)
         {
             Parameter = parameter;
