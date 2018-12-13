@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpressionParser\Expressions\AbsExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ExpressionParser\Expressions\AddExpression.cs" />
     <Compile Include="ExpressionParser\Expressions\BinaryArithmeticExpression.cs" />
     <Compile Include="ExpressionParser\Expressions\DivExpression.cs">

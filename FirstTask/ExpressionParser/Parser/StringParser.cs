@@ -18,6 +18,7 @@ namespace FirstTask
         public const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
         public const string ArithmeticalSymbolPattern = @"^(\+|-|\*|\/|\^)";
         public const string BracketsPattern = @"^(\(|\))";
+        public const string AbsPattern = @"^Abs\(";
 
         public static int OperationPriority = 0;
         public static int MaxOperationPriority = 0;
@@ -31,6 +32,7 @@ namespace FirstTask
         public static readonly Regex VariableRegEx = new Regex(VariablePattern);
         public static readonly Regex ArithmeticalSymbolRegEx = new Regex(ArithmeticalSymbolPattern);
         public static readonly Regex BracketsRegEx = new Regex(BracketsPattern);
+        public static readonly Regex AbsRegEx = new Regex(AbsPattern);
 
         public static List<IBasicExpression> Parse(string input)
         {
@@ -54,6 +56,16 @@ namespace FirstTask
                     PreviousOperation = ExpressionType.Number;
                     var expression = StringToExpressionConverter.ConvertStringToExpression(findedValue, ExpressionType.Number);
                     splittedMembers.Add(expression);
+                }
+                else if (AbsRegEx.IsMatch(input))
+                {
+                    findedValue = AbsRegEx.Match(input).Value;
+                    input = input.Substring(findedValue.Length, input.Length - findedValue.Length);
+                    
+                    PreviousOperation = ExpressionType.Abs;
+                    var absExpression = ParseAbsExpression(ref input);
+                    var expTree = LambdaBuilder.GetExpressionTree(absExpression);
+                    splittedMembers.Add(new AbsExpression(expTree));
                 }
                 else if (VariableRegEx.IsMatch(input))
                 {
@@ -132,6 +144,47 @@ namespace FirstTask
             }
 
             return true;
+        }
+
+        public static List<IBasicExpression> ParseAbsExpression(ref string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return null;
+            }
+
+            int countOfOpennigBrackets = 1;
+            int countOfClosingBrackets = 0;
+            int substringIndex = 0;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '(')
+                {
+                    countOfOpennigBrackets++;
+                }
+                else if (input[i] == ')')
+                {
+                    countOfClosingBrackets++;
+                }
+
+                if (countOfOpennigBrackets == countOfClosingBrackets)
+                {
+                    substringIndex = i;
+                    break;
+                }
+            }
+
+            if (substringIndex == 0)
+            {
+                return null;
+            }
+
+            string absExpression = input.Substring(0, substringIndex);
+            input = input.Substring(substringIndex + 1);
+            var parsedExpression = Parse(absExpression);
+
+            return parsedExpression;
         }
     }
 }

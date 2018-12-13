@@ -10,6 +10,7 @@ namespace FirstTask
     {
         Number = 1,
         Variable,
-        Operation
+        Operation,
+        Abs
     }
 }
