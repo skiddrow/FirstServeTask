@@ -60,6 +60,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExpressionParser\Expressions\NumberExpression.cs" />
+    <Compile Include="ExpressionParser\Parser\SymbolParser.cs" />
     <Compile Include="ProgramParser\FileReader.cs" />
     <Compile Include="ProgramParser\KeyWord.cs" />
     <Compile Include="Program.cs" />

@@ -1,9 +1,8 @@
-Feature: outCollection - displaying any collection that implementing IEnumerable
-out - displaying variable 
+(no) out - displaying variable 
 loop - loop operator(for analog)
-var - creating variable	
-	var real - double variable
-	var string - sttring variable
-	var boolean - bool variable
+let - creating variable	(variable parsing till parser defines that is double, string or bool else returns error)
+	// let real - double variable
+	// let string - sttring variable
+	// let boolean - bool variable
 begin - start of code block
 end - end of code block

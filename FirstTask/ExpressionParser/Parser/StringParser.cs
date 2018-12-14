@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -33,6 +34,29 @@ namespace FirstTask
         public static readonly Regex ArithmeticalSymbolRegEx = new Regex(ArithmeticalSymbolPattern);
         public static readonly Regex BracketsRegEx = new Regex(BracketsPattern);
         public static readonly Regex AbsRegEx = new Regex(AbsPattern);
+
+        public static void Parse2_0(string input)
+        {
+            List<SymbolParser> parsers = new List<SymbolParser>();
+            double numberValue = 0;
+            IBasicExpression expressionForAbs = null;
+            ParameterExpression parameterForVariable = null;
+
+            parsers.Add(new SymbolParser(NumberRegEx, () => new NumberExpression(numberValue)));
+            parsers.Add(new SymbolParser(AbsRegEx, () => new AbsExpression(expressionForAbs)));
+            parsers.Add(new SymbolParser(VariableRegEx, () => new VariableExpression(parameterForVariable)));
+            parsers.Add(new SymbolParser(ArithmeticalSymbolRegEx, () => new DivExpression()));
+            parsers.Add(new SymbolParser(BracketsRegEx, () => new DivExpression()));
+
+            while (input.Length != 0)
+            {
+                var currentParser = parsers.FirstOrDefault(p => p.IsParsebleSymbol(input));
+                var expression = currentParser.Del();
+                var match = currentParser.Regex.Match(input).Value;
+                Console.WriteLine(match);
+                input = input.Substring(match.Length, input.Length - match.Length);
+            }
+        }
 
         public static List<IBasicExpression> Parse(string input)
         {

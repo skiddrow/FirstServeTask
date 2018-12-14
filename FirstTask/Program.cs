@@ -30,12 +30,14 @@ namespace FirstTask
             #endregion
 
             //var res = LambdaBuilder.BuildFrom<Func<double, double, double>>("h/2*(2+((5+7,5/2)+1)-1)+a3");
-            var res = LambdaBuilder.BuildFrom<Func<double>>("5+2+Abs(2*3)-3");
+            //var res = LambdaBuilder.BuildFrom<Func<double>>("5+2+Abs(2*3)-3");
 
-            if (res != null)
-            {
-                Console.WriteLine(res());
-            }
+            //if (res != null)
+            //{
+            //    Console.WriteLine(res());
+            //}
+
+            StringParser.Parse2_0("2+3-a");
 
             Console.ReadKey();
         }
