@@ -1,24 +1,25 @@
-﻿using System;
+﻿using FirstTask.ExpressionParser.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Elements
 {
-    class SubExpression : BinaryArithmeticExpression
+    class SubtractionElement : BinaryArithmeticElement
     {
-        public SubExpression()
+        public SubtractionElement()
             : base()
         { }
 
-        public SubExpression(int priority)
+        public SubtractionElement(int priority)
         {
             Priority = priority;
         } 
 
-        public SubExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
+        public SubtractionElement(IBasicElement leftExpression, IBasicElement rightExpression)
             : base(leftExpression, rightExpression)
         { }
 

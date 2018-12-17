@@ -1,24 +1,25 @@
-﻿using System;
+﻿using FirstTask.ExpressionParser.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Elements
 {
-    class InvolutionExpression : BinaryArithmeticExpression
+    class InvolutionElement : BinaryArithmeticElement
     {
-        public InvolutionExpression()
+        public InvolutionElement()
             : base()
         { }
 
-        public InvolutionExpression(int priority)
+        public InvolutionElement(int priority)
         {
             Priority = priority;
         } 
 
-        public InvolutionExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
+        public InvolutionElement(IBasicElement leftExpression, IBasicElement rightExpression)
             : base(leftExpression, rightExpression)
         { }
 

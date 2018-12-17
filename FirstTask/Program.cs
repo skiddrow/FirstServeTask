@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FirstTask.ExpressionParser.Parser;
+using FirstTask.ProgramParser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,32 +14,18 @@ namespace FirstTask
     {
         static void Main(string[] args)
         {
-            #region
-            //Parser.ParseStringAndCompute("2+3-1");
-
-            //ExpressionParser parser = new ExpressionParser();
-            //var a = parser.Parse("12 + 6*5 -3^ 4+25");
-
-            //var res = LambdaBuilder.BuildFrom<Func<double, double, double>>("y + 6*5 -3^ 4+h");
-            //Console.WriteLine(res(12, 25));
-
-            //var res = LambdaBuilder.BuildFrom<Func<double, double, double>>("y + 6*5 -3^ 4+h");
-
-            //if (res != null)
+            //try
             //{
-            //    Console.WriteLine(res(12, 25));
+            //    var lambda = LambdaBuilder.BuildFrom<Func<double, double, double>>("h/2*(2+((5+7,5/2)+1)-1)+a3");
+            //    Console.WriteLine(lambda(12, 20));
             //}
-            #endregion
-
-            //var res = LambdaBuilder.BuildFrom<Func<double, double, double>>("h/2*(2+((5+7,5/2)+1)-1)+a3");
-            //var res = LambdaBuilder.BuildFrom<Func<double>>("5+2+Abs(2*3)-3");
-
-            //if (res != null)
+            //catch (Exception)
             //{
-            //    Console.WriteLine(res());
+            //    Console.WriteLine("Incorrect input");
             //}
 
-            StringParser.Parse2_0("2+3-a");
+            //var pp = new ProgramInterpreter();
+            //pp.Run();
 
             Console.ReadKey();
         }

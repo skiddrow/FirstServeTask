@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Interfaces
 {
-    interface IBasicExpression
+    interface IBasicElement
     {
         int Priority { get; set; }
         Expression Compute();

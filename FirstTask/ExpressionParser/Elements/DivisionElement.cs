@@ -1,24 +1,25 @@
-﻿using System;
+﻿using FirstTask.ExpressionParser.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Elements
 {
-    class DivExpression : BinaryArithmeticExpression
+    class DivisionElement : BinaryArithmeticElement
     {
-        public DivExpression()
+        public DivisionElement()
             : base()
         { }
 
-        public DivExpression(int priority)
+        public DivisionElement(int priority)
         {
             Priority = priority;
         } 
 
-        public DivExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
+        public DivisionElement(IBasicElement leftExpression, IBasicElement rightExpression)
             : base(leftExpression, rightExpression)
         { }
 

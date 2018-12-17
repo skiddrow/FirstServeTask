@@ -5,17 +5,17 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Parser
 {
     class SymbolParser
     {
-        public Func<IBasicExpression> Del;
         public Regex Regex;
+        public ExpressionType ExpressionType;
 
-        public SymbolParser(Regex symbolRegex, Func<IBasicExpression> del)
+        public SymbolParser(Regex symbolRegex, ExpressionType expressionType)
         {
             Regex = symbolRegex;
-            Del = del;
+            ExpressionType = expressionType;
         }
 
         public bool IsParsebleSymbol(string input)
@@ -29,6 +29,11 @@ namespace FirstTask
             input = input.Substring(match.Length, input.Length - match.Length);
 
             return match;
+        }
+
+        public ExpressionType GetExpressionType()
+        {
+            return ExpressionType;
         }
     }
 }

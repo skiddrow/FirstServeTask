@@ -1,24 +1,25 @@
-﻿using System;
+﻿using FirstTask.ExpressionParser.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Elements
 {
-    class MulExpression : BinaryArithmeticExpression
+    class MultiplicationElement : BinaryArithmeticElement
     {
-        public MulExpression()
+        public MultiplicationElement()
             : base()
         { }
 
-        public MulExpression(int priority)
+        public MultiplicationElement(int priority)
         {
             Priority = priority;
         } 
 
-        public MulExpression(IBasicExpression leftExpression, IBasicExpression rightExpression)
+        public MultiplicationElement(IBasicElement leftExpression, IBasicElement rightExpression)
             : base(leftExpression, rightExpression)
         { }
 

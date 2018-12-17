@@ -1,25 +1,27 @@
-﻿using System;
+﻿using FirstTask.ExpressionParser.Elements;
+using FirstTask.ExpressionParser.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Parser
 {
     static class LambdaBuilder
     {
-        public static IBasicExpression GetExpressionTree(List<IBasicExpression> inputList)
+        public static IBasicElement GetExpressionTree(List<IBasicElement> inputList)
         {
-            for (int i = StringParser.MaxOperationPriority; i >= 0; i--)
+            for (int i = ExpressionsParser.MaxOperationPriority; i >= 0; i--)
             {
                 int n = inputList.Count;
 
                 for (int j = 1; j < n; j += 2)
                 {
-                    if (inputList[j] is InvolutionExpression && inputList[j].Priority == i)
+                    if (inputList[j] is InvolutionElement && inputList[j].Priority == i)
                     {
-                        var mulExp = inputList[j] as InvolutionExpression;
+                        var mulExp = inputList[j] as InvolutionElement;
                         mulExp.LeftExpression = inputList[j - 1];
                         mulExp.RightExpression = inputList[j + 1];
                         inputList[j] = mulExp;
@@ -32,17 +34,17 @@ namespace FirstTask
 
                 for (int j = 1; j < n; j += 2)
                 {
-                    if ((inputList[j] is MulExpression || inputList[j] is DivExpression) && inputList[j].Priority == i)
+                    if ((inputList[j] is MultiplicationElement || inputList[j] is DivisionElement) && inputList[j].Priority == i)
                     {
                         dynamic exp;
 
-                        if (inputList[j] is MulExpression)
+                        if (inputList[j] is MultiplicationElement)
                         {
-                            exp = inputList[j] as MulExpression;
+                            exp = inputList[j] as MultiplicationElement;
                         }
                         else
                         {
-                            exp = inputList[j] as DivExpression;
+                            exp = inputList[j] as DivisionElement;
                         }
 
                         exp.LeftExpression = inputList[j - 1];
@@ -57,17 +59,17 @@ namespace FirstTask
 
                 for (int j = 1; j < n; j += 2)
                 {
-                    if ((inputList[j] is AddExpression || inputList[j] is SubExpression) && inputList[j].Priority == i)
+                    if ((inputList[j] is AdditionElement || inputList[j] is SubtractionElement) && inputList[j].Priority == i)
                     {
                         dynamic exp;
 
-                        if (inputList[j] is AddExpression)
+                        if (inputList[j] is AdditionElement)
                         {
-                            exp = inputList[j] as AddExpression;
+                            exp = inputList[j] as AdditionElement;
                         }
                         else
                         {
-                            exp = inputList[j] as SubExpression;
+                            exp = inputList[j] as SubtractionElement;
                         }
 
                         exp.LeftExpression = inputList[j - 1];
@@ -93,16 +95,25 @@ namespace FirstTask
 
         public static T BuildFrom<T>(string formula) where T : class
         {
-            var parsedString = StringParser.Parse(formula);
+            var tokenizedString = StringTokenizer.Parse(formula);
 
-            if (parsedString == null)
+            if (tokenizedString == null)
             {
                 Console.WriteLine("Input expression has incorrect format");
 
                 return null;
             }
 
-            IBasicExpression expressionTree = GetExpressionTree(parsedString);
+            var parsedExpressions = ExpressionsParser.ConvertStringsToExpressions(tokenizedString);
+
+            if (parsedExpressions == null)
+            {
+                Console.WriteLine("Input expression has incorrect format");
+
+                return null;
+            }
+
+            var expressionTree = GetExpressionTree(parsedExpressions);
 
             if (expressionTree == null)
             {
@@ -111,7 +122,7 @@ namespace FirstTask
                 return null;
             }
 
-            return Expression.Lambda<T>(expressionTree.Compute(), StringToExpressionConverter.Parameters).Compile();
+            return Expression.Lambda<T>(expressionTree.Compute(), ExpressionsParser.Parameters).Compile();
         }
 
     }
