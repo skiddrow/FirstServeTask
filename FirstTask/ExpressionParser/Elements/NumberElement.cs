@@ -1,17 +1,20 @@
-﻿using System;
+﻿using FirstTask.ExpressionParser.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Elements
 {
-    class NumberExpression : IBasicExpression
+    class NumberElement : IBasicElement
     {
-        private double Value;
+        protected double Value;
 
-        public NumberExpression(double value)
+        public int Priority { get; set; }
+
+        public NumberElement(double value)
         {
             this.Value = value;
         }

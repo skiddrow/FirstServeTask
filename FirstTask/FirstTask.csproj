@@ -42,35 +42,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressionParser\AddExpression.cs" />
-    <Compile Include="ExpressionParser\BinaryArithmeticExpression.cs" />
-    <Compile Include="ExpressionParser\DivExpression.cs">
+    <Compile Include="ExpressionParser\CustomObjects\BaseCustomObject.cs" />
+    <Compile Include="ExpressionParser\Elements\AbsElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExpressionParser\IBasicExpression.cs" />
-    <Compile Include="ExpressionParser\InvolutionExpression.cs">
+    <Compile Include="ExpressionParser\Elements\AdditionElement.cs" />
+    <Compile Include="ExpressionParser\Elements\BinaryArithmeticElement.cs" />
+    <Compile Include="ExpressionParser\Elements\DivisionElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExpressionParser\LambdaBuilder.cs" />
-    <Compile Include="ExpressionParser\MulExpression.cs">
+    <Compile Include="ExpressionParser\Infrastructure.cs" />
+    <Compile Include="ExpressionParser\Interfaces\IBasicElement.cs" />
+    <Compile Include="ExpressionParser\Elements\InvolutionElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExpressionParser\NumberExpression.cs" />
-    <Compile Include="ExpressionParser\Parser.cs" />
-    <Compile Include="FileReader.cs" />
+    <Compile Include="ExpressionParser\Parser\ElementParser\ExpressionConvertor.cs" />
+    <Compile Include="ExpressionParser\Parser\ElementParser\NumberConverter.cs" />
+    <Compile Include="ExpressionParser\Parser\ElementParser\VariableConverter.cs" />
+    <Compile Include="ExpressionParser\Parser\LambdaBuilder.cs" />
+    <Compile Include="ExpressionParser\Elements\MultiplicationElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExpressionParser\Elements\NumberElement.cs" />
+    <Compile Include="ExpressionParser\Parser\SymbolParser.cs" />
+    <Compile Include="ProgramParser\WordParser\CommandParser.cs" />
+    <Compile Include="ProgramParser\FileReader.cs" />
+    <Compile Include="ProgramParser\KeyWords.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ProgramParser.cs" />
+    <Compile Include="ProgramParser\ProgramInterpreter.cs" />
+    <Compile Include="ProgramParser\WordParser\VariableDefinitionParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ExpressionParser\StringParser.cs" />
-    <Compile Include="ExpressionParser\StringToExpressionConverter.cs" />
-    <Compile Include="ExpressionParser\SubExpression.cs">
+    <Compile Include="ExpressionParser\Parser\StringTokenizer.cs" />
+    <Compile Include="ExpressionParser\Parser\ExpressionsParser.cs" />
+    <Compile Include="ExpressionParser\Elements\SubtractionElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExpressionParser\VariableExpression.cs" />
+    <Compile Include="ExpressionParser\Elements\VariableElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

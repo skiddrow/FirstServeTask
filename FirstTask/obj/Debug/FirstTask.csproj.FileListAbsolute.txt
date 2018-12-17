@@ -1,6 +1,6 @@
 C:\SoftServe\IndividualTasks\FirstTask\bin\Debug\FirstTask.exe.config
-C:\SoftServe\IndividualTasks\FirstTask\obj\Debug\FirstTask.csprojResolveAssemblyReference.cache
 C:\SoftServe\IndividualTasks\FirstTask\bin\Debug\FirstTask.exe
 C:\SoftServe\IndividualTasks\FirstTask\bin\Debug\FirstTask.pdb
 C:\SoftServe\IndividualTasks\FirstTask\obj\Debug\FirstTask.exe
 C:\SoftServe\IndividualTasks\FirstTask\obj\Debug\FirstTask.pdb
+C:\SoftServe\IndividualTasks\FirstTask\obj\Debug\FirstTask.csprojResolveAssemblyReference.cache

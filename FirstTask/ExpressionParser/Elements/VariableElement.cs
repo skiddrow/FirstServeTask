@@ -1,17 +1,20 @@
-﻿using System;
+﻿using FirstTask.ExpressionParser.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ExpressionParser.Elements
 {
-    class VariableExpression : IBasicExpression
+    class VariableElement : IBasicElement
     {
         private ParameterExpression Parameter;
 
-        public VariableExpression(ParameterExpression parameter)
+        public int Priority { get; set; }
+
+        public VariableElement(ParameterExpression parameter)
         {
             Parameter = parameter;
         }

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask
+namespace FirstTask.ProgramParser
 {
     class FileReader
     {
         public static List<string> ReadFromFile(string filePath)
         {
-            List<string> lines = new List<string>();
+            var lines = new List<string>();
 
             try
             {
@@ -22,7 +22,6 @@ namespace FirstTask
                     while ((line = reader.ReadLine()) != null)
                     {
                         lines.Add(line);
-                        Console.WriteLine(line);
                     }
                 }
             }
