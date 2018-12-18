@@ -5,13 +5,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace FirstTask.ProgramParser.CodeLineParser
+namespace FirstTask.ProgramParser.CodeLineParser.Tokenizer
 {
-    class WordParser
+    class StatementTokenizer
     {
         public Regex Regex;
 
-        public WordParser(Regex symbolRegex)
+        public StatementTokenizer(Regex symbolRegex)
         {
             Regex = symbolRegex;
         }
@@ -21,12 +21,16 @@ namespace FirstTask.ProgramParser.CodeLineParser
             return Regex.IsMatch(input);
         }
 
-        public string GetMatchAndSubstring(ref string input)
+        public string GetMatch(string input)
         {
             var match = Regex.Match(input).Value;
-            input = input.Substring(match.Length, input.Length - match.Length);
 
             return match;
+        }
+
+        public void CutString(ref string input, string match)
+        {
+            input = input.Substring(match.Length, input.Length - match.Length);
         }
     }
 }

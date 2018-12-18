@@ -1,6 +1,7 @@
 ﻿using FirstTask.ExpressionParser.Parser;
 using FirstTask.ProgramParser;
 using FirstTask.ProgramParser.CodeLineParser;
+using FirstTask.ProgramParser.CodeLineParser.Tokenizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,15 +29,15 @@ namespace FirstTask
             //var pp = new ProgramInterpreter();
             //pp.Run();
 
-            //var res = CodeLineTokenizer.Tokenize("let i := #5+3#");
+            //var res = CodeLineTokenizer.Tokenize("out i");
 
             //foreach (var item in res)
             //{
             //    Console.WriteLine(item);
             //}
 
-            ProgramInterpreter interpreter = new ProgramInterpreter();
-            interpreter.Run();
+            //ProgramInterpreter interpreter = new ProgramInterpreter();
+            //interpreter.Run();
 
             Console.ReadKey();
         }

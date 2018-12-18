@@ -42,7 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressionParser\CustomObjects\BaseCustomObject.cs" />
+    <Compile Include="Enums\ExpressionType.cs" />
+    <Compile Include="Enums\OperatorType.cs" />
     <Compile Include="ExpressionParser\Elements\AbsElement.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -51,7 +52,6 @@
     <Compile Include="ExpressionParser\Elements\DivisionElement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExpressionParser\Infrastructure.cs" />
     <Compile Include="ExpressionParser\Interfaces\IBasicElement.cs" />
     <Compile Include="ExpressionParser\Elements\InvolutionElement.cs">
       <SubType>Code</SubType>
@@ -65,12 +65,15 @@
     </Compile>
     <Compile Include="ExpressionParser\Elements\NumberElement.cs" />
     <Compile Include="ExpressionParser\Parser\SymbolParser.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\ConditionExpressionGenerator.cs" />
     <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\Contract\Generator.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\PrintGerator.cs" />
     <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\VariableGenerator.cs" />
-    <Compile Include="ProgramParser\CodeLineParser\LineParser.cs" />
-    <Compile Include="ProgramParser\CodeLineParser\CodeLineTokenizer.cs" />
-    <Compile Include="ProgramParser\CodeLineParser\TypeDefiner.cs" />
-    <Compile Include="ProgramParser\CodeLineParser\WordParser.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\Parser\LineParser.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\Tokenizer\CodeLineTokenizer.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\Parser\TypeDefiner.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\Tokenizer\StatementTokenizer.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\Tokenizer\Token.cs" />
     <Compile Include="ProgramParser\FileReader.cs" />
     <Compile Include="ProgramParser\KeyWords.cs" />
     <Compile Include="Program.cs" />

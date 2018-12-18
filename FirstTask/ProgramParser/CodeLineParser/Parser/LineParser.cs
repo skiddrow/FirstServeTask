@@ -1,5 +1,6 @@
 ﻿using FirstTask.ProgramParser.CodeLineParser.ExpressionGenerators;
 using FirstTask.ProgramParser.CodeLineParser.ExpressionGenerators.Contract;
+using FirstTask.ProgramParser.CodeLineParser.Tokenizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask.ProgramParser.CodeLineParser
+namespace FirstTask.ProgramParser.CodeLineParser.Parser
 {
     static class LineParser
     {
@@ -22,7 +23,7 @@ namespace FirstTask.ProgramParser.CodeLineParser
 
             return generator.GenerateExpression();
         }
-
+        
         public static Type DefineExpressionType(string expression)
         {
             var definers = new List<TypeDefiner>();
@@ -39,7 +40,7 @@ namespace FirstTask.ProgramParser.CodeLineParser
                 return null;
             }
 
-            return currentDefiner.Function();
+            return currentDefiner.ExecuteFunc();
         }
     }
 }

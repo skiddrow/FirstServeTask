@@ -60,7 +60,7 @@ namespace FirstTask.ExpressionParser.Parser
                 else
                 {
                     CurrentSymbol = inputValues[0];
-                    var currentElement = currentParser.Function();
+                    var currentElement = currentParser.ExecuteFunc();
                     convertedElements.Add(currentElement);
                     inputValues.Remove(inputValues[0]);
                 }

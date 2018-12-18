@@ -36,7 +36,7 @@ namespace FirstTask.ExpressionParser.Parser
                 {
                     if ((inputList[j] is MultiplicationElement || inputList[j] is DivisionElement) && inputList[j].Priority == i)
                     {
-                        dynamic exp;
+                        BinaryArithmeticElement exp;
 
                         if (inputList[j] is MultiplicationElement)
                         {
@@ -61,7 +61,7 @@ namespace FirstTask.ExpressionParser.Parser
                 {
                     if ((inputList[j] is AdditionElement || inputList[j] is SubtractionElement) && inputList[j].Priority == i)
                     {
-                        dynamic exp;
+                        BinaryArithmeticElement exp;
 
                         if (inputList[j] is AdditionElement)
                         {

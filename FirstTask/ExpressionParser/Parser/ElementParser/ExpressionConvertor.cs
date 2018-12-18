@@ -10,8 +10,8 @@ namespace FirstTask.ExpressionParser.Parser.ElementParser
 {
     class ExpressionConvertor
     {
-        public Func<IBasicElement> Function;
         public Regex Regex;
+        protected Func<IBasicElement> Function;
 
         public ExpressionConvertor() { }
 
@@ -24,6 +24,18 @@ namespace FirstTask.ExpressionParser.Parser.ElementParser
         public bool IsParsebleSymbol(string input)
         {
             return Regex.IsMatch(input);
+        }
+
+        public IBasicElement ExecuteFunc()
+        {
+            if (Function != null)
+            {
+                return Function();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

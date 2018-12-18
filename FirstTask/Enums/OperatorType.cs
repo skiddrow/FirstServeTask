@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask.ExpressionParser.CustomObjects
+namespace FirstTask.Enums
 {
-    class BaseCustomObject
+    enum OperatorType
     {
+        Let,
+        Out
     }
 }

@@ -10,9 +10,8 @@ namespace FirstTask.ExpressionParser.Elements
 {
     class NumberElement : IBasicElement
     {
-        protected double Value;
-
         public int Priority { get; set; }
+        protected double Value;
 
         public NumberElement(double value)
         {

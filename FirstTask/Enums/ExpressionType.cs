@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstTask.ExpressionParser
+namespace FirstTask.Enums
 {
-    public enum ExpressionType
+    public enum ElementType
     {
         Number = 1,
         Variable,

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using FirstTask.Enums;
 
 namespace FirstTask.ExpressionParser.Parser
 {
@@ -22,7 +23,7 @@ namespace FirstTask.ExpressionParser.Parser
         public const string ClosingBracketPattern = @"^\)";
         public const string AbsPattern = @"^Abs\(";
 
-        public static ExpressionType PreviousOperation = 0;
+        public static ElementType PreviousOperation = 0;
         public static readonly Regex NumberRegEx = new Regex(NumberPattern);
         public static readonly Regex AdditionRegEx = new Regex(AdditionPattern);
         public static readonly Regex SubtractionRegEx = new Regex(SubtractionPattern);
@@ -48,22 +49,23 @@ namespace FirstTask.ExpressionParser.Parser
                 return null;
             }
 
-            parsers.Add(new SymbolParser(NumberRegEx, ExpressionType.Number));
-            parsers.Add(new SymbolParser(AbsRegEx, ExpressionType.Abs));
-            parsers.Add(new SymbolParser(VariableRegEx, ExpressionType.Variable));
-            parsers.Add(new SymbolParser(ArithmeticalSymbolRegEx, ExpressionType.Operation));
-            parsers.Add(new SymbolParser(OpeningBracketRegEx, ExpressionType.OpeningBracket));
-            parsers.Add(new SymbolParser(ClosingBracketRegEx, ExpressionType.ClosingBracket));
+            parsers.Add(new SymbolParser(NumberRegEx, ElementType.Number));
+            parsers.Add(new SymbolParser(AbsRegEx, ElementType.Abs));
+            parsers.Add(new SymbolParser(VariableRegEx, ElementType.Variable));
+            parsers.Add(new SymbolParser(ArithmeticalSymbolRegEx, ElementType.Operation));
+            parsers.Add(new SymbolParser(OpeningBracketRegEx, ElementType.OpeningBracket));
+            parsers.Add(new SymbolParser(ClosingBracketRegEx, ElementType.ClosingBracket));
 
             while (input.Length != 0)
             {
                 var currentParser = parsers.FirstOrDefault(p => p.IsParsebleSymbol(input));
-                var match = currentParser.GetMatchAndSubstring(ref input);
+                var match = currentParser.GetMatch(input);
+                currentParser.CutString(ref input, match);
                 var currentExpressionType = currentParser.GetExpressionType();
 
                 if ((currentExpressionType == PreviousOperation) &&
-                    currentExpressionType != ExpressionType.OpeningBracket &&
-                    currentExpressionType != ExpressionType.ClosingBracket)
+                    currentExpressionType != ElementType.OpeningBracket &&
+                    currentExpressionType != ElementType.ClosingBracket)
                 {
                     Console.WriteLine("Input string cannot contains two arithmetical symbols in a row!");
                     return null;
@@ -107,9 +109,9 @@ namespace FirstTask.ExpressionParser.Parser
             return true;
         }
 
-        public static ExpressionType GetExpressionType(ExpressionType currentType)
+        public static ElementType GetExpressionType(ElementType currentType)
         {
-            return currentType == ExpressionType.OpeningBracket || currentType == ExpressionType.ClosingBracket
+            return currentType == ElementType.OpeningBracket || currentType == ElementType.ClosingBracket
                 ? PreviousOperation : currentType;
         }
     }

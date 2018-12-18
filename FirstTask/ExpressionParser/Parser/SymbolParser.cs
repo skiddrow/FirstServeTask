@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstTask.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,9 @@ namespace FirstTask.ExpressionParser.Parser
     class SymbolParser
     {
         public Regex Regex;
-        public ExpressionType ExpressionType;
+        public ElementType ExpressionType;
 
-        public SymbolParser(Regex symbolRegex, ExpressionType expressionType)
+        public SymbolParser(Regex symbolRegex, ElementType expressionType)
         {
             Regex = symbolRegex;
             ExpressionType = expressionType;
@@ -23,15 +24,19 @@ namespace FirstTask.ExpressionParser.Parser
             return Regex.IsMatch(input);
         }
 
-        public string GetMatchAndSubstring(ref string input)
+        public string GetMatch(string input)
         {
             var match = Regex.Match(input).Value;
-            input = input.Substring(match.Length, input.Length - match.Length);
 
             return match;
         }
 
-        public ExpressionType GetExpressionType()
+        public void CutString(ref string input, string match)
+        {
+            input = input.Substring(match.Length, input.Length - match.Length);
+        }
+
+        public ElementType GetExpressionType()
         {
             return ExpressionType;
         }

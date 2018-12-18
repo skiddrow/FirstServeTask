@@ -1,4 +1,6 @@
 ﻿using FirstTask.ProgramParser.CodeLineParser;
+using FirstTask.ProgramParser.CodeLineParser.Parser;
+using FirstTask.ProgramParser.CodeLineParser.Tokenizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;

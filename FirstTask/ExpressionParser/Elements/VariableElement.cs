@@ -10,18 +10,18 @@ namespace FirstTask.ExpressionParser.Elements
 {
     class VariableElement : IBasicElement
     {
-        private ParameterExpression Parameter;
+        private ParameterExpression _parameter;
 
         public int Priority { get; set; }
 
         public VariableElement(ParameterExpression parameter)
         {
-            Parameter = parameter;
+            _parameter = parameter;
         }
 
         public Expression Compute()
         {
-            return Parameter;
+            return _parameter;
         }
     }
 }
