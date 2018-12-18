@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstTask.ProgramParser.CodeLineParser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -19,6 +20,7 @@ namespace FirstTask.ProgramParser
         public void Run()
         {
             var programStrings = FileReader.ReadFromFile(FilePath);
+            var expressions = new List<Expression>();
 
             if (programStrings == null)
             {
@@ -29,15 +31,30 @@ namespace FirstTask.ProgramParser
 
             foreach (var line in programStrings)
             {
-                Console.WriteLine(line);
+                var tokenizedLine = CodeLineTokenizer.Tokenize(line);
+
+                if (tokenizedLine == null)
+                {
+                    Console.WriteLine("Error!");
+
+                    return;
+                }
+
+                var interpretedLine = LineParser.Parse(tokenizedLine);
+
+                if (interpretedLine == null)
+                {
+                    Console.WriteLine("Error!");
+
+                    return;
+                }
+
+                expressions.Add(interpretedLine);
             }
+
+            var block = Expression.Block(expressions);
+
+            Expression.Invoke(block);
         }
-
-        //public static List<string> TokenizeLine(string line)
-        //{
-        //    var tokenizedLine = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-        //    return tokenizedLine.ToList();
-        //}
     }
 }

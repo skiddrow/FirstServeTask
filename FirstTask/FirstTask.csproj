@@ -65,12 +65,16 @@
     </Compile>
     <Compile Include="ExpressionParser\Elements\NumberElement.cs" />
     <Compile Include="ExpressionParser\Parser\SymbolParser.cs" />
-    <Compile Include="ProgramParser\WordParser\CommandParser.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\Contract\Generator.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\VariableGenerator.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\LineParser.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\CodeLineTokenizer.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\TypeDefiner.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\WordParser.cs" />
     <Compile Include="ProgramParser\FileReader.cs" />
     <Compile Include="ProgramParser\KeyWords.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramParser\ProgramInterpreter.cs" />
-    <Compile Include="ProgramParser\WordParser\VariableDefinitionParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpressionParser\Parser\StringTokenizer.cs" />
     <Compile Include="ExpressionParser\Parser\ExpressionsParser.cs" />
