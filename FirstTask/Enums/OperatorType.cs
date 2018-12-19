@@ -9,6 +9,11 @@ namespace FirstTask.Enums
     enum OperatorType
     {
         Let,
-        Out
+        Out,
+        NumbetLiteral,
+        StringLiteral,
+        BoolLiteral,
+        ExpressionLiteral,
+        Variable
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstTask.ProgramParser.CodeLineParser.Contract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,30 +8,27 @@ using System.Threading.Tasks;
 
 namespace FirstTask.ProgramParser.CodeLineParser.Tokenizer
 {
-    class StatementTokenizer
+    class StatementTokenizer : BaseRecognizer
     {
-        public Regex Regex;
+        protected Func<string, Token> Function;
 
-        public StatementTokenizer(Regex symbolRegex)
+        public StatementTokenizer(Regex symbolRegex, Func<string, Token> function)
+            : base(symbolRegex)
         {
-            Regex = symbolRegex;
+            Function = function;
         }
 
-        public bool IsParsebleSymbol(string input)
+        public Token ExecuteFunction(string statement)
         {
-            return Regex.IsMatch(input);
-        }
+            if (Function != null)
+            {
+                return Function(statement);
+            }
+            else
+            {
+                return null;
+            }
 
-        public string GetMatch(string input)
-        {
-            var match = Regex.Match(input).Value;
-
-            return match;
-        }
-
-        public void CutString(ref string input, string match)
-        {
-            input = input.Substring(match.Length, input.Length - match.Length);
         }
     }
 }

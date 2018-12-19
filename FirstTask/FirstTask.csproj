@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Enums\ExpressionType.cs" />
     <Compile Include="Enums\OperatorType.cs" />
     <Compile Include="ExpressionParser\Elements\AbsElement.cs">
@@ -65,6 +66,7 @@
     </Compile>
     <Compile Include="ExpressionParser\Elements\NumberElement.cs" />
     <Compile Include="ExpressionParser\Parser\SymbolParser.cs" />
+    <Compile Include="ProgramParser\CodeLineParser\Contract\BaseRecognizer.cs" />
     <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\ConditionExpressionGenerator.cs" />
     <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\Contract\Generator.cs" />
     <Compile Include="ProgramParser\CodeLineParser\ExpressionGenerators\PrintGerator.cs" />

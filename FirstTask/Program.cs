@@ -26,18 +26,29 @@ namespace FirstTask
             //    Console.WriteLine("Incorrect input");
             //}
 
-            //var pp = new ProgramInterpreter();
-            //pp.Run();
-
             //var res = CodeLineTokenizer.Tokenize("out i");
 
             //foreach (var item in res)
             //{
-            //    Console.WriteLine(item);
+            //    Console.WriteLine(item.Value);
+            //    Console.WriteLine(item.TypeOfOperator);
+            //    Console.WriteLine();
             //}
 
-            //ProgramInterpreter interpreter = new ProgramInterpreter();
-            //interpreter.Run();
+            ProgramInterpreter interpreter = new ProgramInterpreter();
+            interpreter.Run();
+
+
+            //var method = typeof(Console).GetMethod("WriteLine", new Type[] { typeof(string) });
+            //var variable = Expression.Parameter(typeof(string), "a");
+            //var assign = Expression.Assign(variable, Expression.Constant(42.ToString()));
+            //var e = Expression.Call(null, method, variable);
+            //var b = Expression.Block(new[] { variable }, assign, e);
+            ////Console.WriteLine(b);
+            //foreach (var a in b.Expressions)
+            //    Console.WriteLine(a);
+            //var lambda = Expression.Lambda<Action>(b);
+            //lambda.Compile().DynamicInvoke();
 
             Console.ReadKey();
         }

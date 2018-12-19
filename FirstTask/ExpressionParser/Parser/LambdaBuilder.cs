@@ -93,6 +93,38 @@ namespace FirstTask.ExpressionParser.Parser
             }
         }
 
+        public static Expression GetExpression(string formula)
+        {
+            var tokenizedString = StringTokenizer.Parse(formula);
+
+            if (tokenizedString == null)
+            {
+                Console.WriteLine("Input expression has incorrect format");
+
+                return null;
+            }
+
+            var parsedExpressions = ExpressionsParser.ConvertStringsToExpressions(tokenizedString);
+
+            if (parsedExpressions == null)
+            {
+                Console.WriteLine("Input expression has incorrect format");
+
+                return null;
+            }
+
+            var expressionTree = GetExpressionTree(parsedExpressions);
+
+            if (expressionTree == null)
+            {
+                Console.WriteLine("Input expression has incorrect format");
+
+                return null;
+            }
+
+            return expressionTree.Compute();
+        }
+
         public static T BuildFrom<T>(string formula) where T : class
         {
             var tokenizedString = StringTokenizer.Parse(formula);

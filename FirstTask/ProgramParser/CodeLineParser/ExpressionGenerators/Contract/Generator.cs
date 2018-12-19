@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstTask.ProgramParser.CodeLineParser.Tokenizer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,9 +10,9 @@ namespace FirstTask.ProgramParser.CodeLineParser.ExpressionGenerators.Contract
 {
     abstract class Generator
     {
-        protected List<string> CodeLine;
+        protected List<Token> CodeLine;
 
-        public Generator(List<string> codeLine)
+        public Generator(List<Token> codeLine)
         {
             CodeLine = codeLine;
         }

@@ -1,4 +1,5 @@
-﻿using FirstTask.ProgramParser.CodeLineParser.Tokenizer;
+﻿using FirstTask.ProgramParser.CodeLineParser.Contract;
+using FirstTask.ProgramParser.CodeLineParser.Tokenizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FirstTask.ProgramParser.CodeLineParser.Parser
 {
-    class TypeDefiner : StatementTokenizer
+    class TypeDefiner : BaseRecognizer
     {
         protected Func<Type> Function;
 

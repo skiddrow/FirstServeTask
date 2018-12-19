@@ -1,4 +1,7 @@
-﻿using FirstTask.ProgramParser.CodeLineParser.ExpressionGenerators.Contract;
+﻿using FirstTask.Enums;
+using FirstTask.ExpressionParser.Parser;
+using FirstTask.ProgramParser.CodeLineParser.ExpressionGenerators.Contract;
+using FirstTask.ProgramParser.CodeLineParser.Parser;
 using FirstTask.ProgramParser.CodeLineParser.Tokenizer;
 using System;
 using System.Collections.Generic;
@@ -11,35 +14,29 @@ namespace FirstTask.ProgramParser.CodeLineParser.ExpressionGenerators
 {
     class VariableGenerator : Generator
     {
-        private Type TypeOfVariable;
+        private Type _typeOfVariable;
 
-        public VariableGenerator(List<string> codeLine, Type typeOfVariable)
+        public VariableGenerator(List<Token> codeLine)
             : base(codeLine)
-        {
-            TypeOfVariable = typeOfVariable;
-        }
+        { }
 
         public override bool IsCorrectCodeLine()
         {
-            if (CodeLine.Count != 4)
+            if (CodeLine.Count != 2)
             {
                 return false;
             }
 
-            if (!CodeLineTokenizer.VariableRegEx.IsMatch(CodeLine[1]))
+            // Is code line contains expression which can be assigned to a variable
+            if (!CodeLine.Exists(token => token.TypeOfOperator == OperatorType.NumbetLiteral) &&
+                !CodeLine.Exists(token => token.TypeOfOperator == OperatorType.BoolLiteral) &&
+                !CodeLine.Exists(token => token.TypeOfOperator == OperatorType.StringLiteral) &&
+                !CodeLine.Exists(token => token.TypeOfOperator == OperatorType.ExpressionLiteral))
             {
                 return false;
             }
 
-            if (!CodeLineTokenizer.AssignRegEx.IsMatch(CodeLine[2]))
-            {
-                return false;
-            }
-
-            if (CodeLineTokenizer.NumberLiteralRegEx.IsMatch(CodeLine[3]) &
-                CodeLineTokenizer.BoolLiteralRegEx.IsMatch(CodeLine[3]) &
-                CodeLineTokenizer.StringLiteralRegEx.IsMatch(CodeLine[3]) &
-                CodeLineTokenizer.ExpressionLiteralRegEx.IsMatch(CodeLine[3]))
+            if (CodeLine.FindAll(token => token.TypeOfOperator == OperatorType.Let).Count > 1)
             {
                 return false;
             }
@@ -54,24 +51,47 @@ namespace FirstTask.ProgramParser.CodeLineParser.ExpressionGenerators
                 return null;
             }
 
-            string NameOfVariable = CodeLine[1];
-            var variableExpression = Expression.Variable(TypeOfVariable, NameOfVariable);
-            object variableValue = 0;
+            var letToken = CodeLine.FirstOrDefault(token => token.TypeOfOperator == OperatorType.Let);
+            letToken.Value = letToken.Value.Replace("let", "");
+            var nameOfVariable = StringTokenizer.VariableRegEx.Match(letToken.Value).Value;
+            var valueToken = CodeLine.FirstOrDefault(token => token.TypeOfOperator != OperatorType.Let);
+            string variableValue = valueToken.Value;
+            _typeOfVariable = LineParser.DefineExpressionType(variableValue);
+            var variableExpression = Expression.Variable(_typeOfVariable, nameOfVariable);
+            ProgramInterpreter.Parameters.Add(variableExpression);
+            ProgramInterpreter.NamedParameters.Add(nameOfVariable, variableExpression);
+            object variableParsedValue = 0;
+            
+            if (_typeOfVariable.Name == "Single")
+            {
+                variableParsedValue = Single.Parse(variableValue);
+            }
+            else if (_typeOfVariable.Name == "String")
+            {
+                variableParsedValue = variableValue.Substring(1, variableValue.Length - 2);
+            }
+            else if (_typeOfVariable.Name == "Boolean")
+            {
+                variableParsedValue = Boolean.Parse(variableValue);
+            }
+            else if (_typeOfVariable.Name == "Double")
+            {
+                var exp = LambdaBuilder.GetExpression(variableValue.Substring(1, variableValue.Length - 2));
+                variableParsedValue = Expression.Lambda<Func<double>>(exp, new ParameterExpression[] { }).Compile().DynamicInvoke();
 
-            if (TypeOfVariable.Name == "Double")
-            {
-                variableValue = Double.Parse(CodeLine[3]);
+                if ((double)variableParsedValue == double.NaN)
+                {
+                    return null;
+                }
             }
-            else if (TypeOfVariable.Name == "String")
+            else
             {
-                variableValue = CodeLine[3].ToString();
-            }
-            else if (TypeOfVariable.Name == "Boolean")
-            {
-                variableValue = Boolean.Parse(CodeLine[3]);
+                return null;
             }
 
-            var expression = Expression.Assign(variableExpression, Expression.Constant(variableValue));
+            var expression = Expression.Assign(variableExpression, Expression.Constant(variableParsedValue));
+            ProgramInterpreter.Assign = expression;
+            //var expression = Expression.Block(new ParameterExpression[] { variableExpression }, expression, expression);
 
             return expression;
         }

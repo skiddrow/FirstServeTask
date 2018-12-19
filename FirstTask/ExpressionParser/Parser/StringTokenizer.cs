@@ -17,7 +17,7 @@ namespace FirstTask.ExpressionParser.Parser
         public const string MultiplicationPattern = @"^\*";
         public const string DivisionPattern = @"^/";
         public const string InvolutionPattern = @"^\^";
-        public const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
+        public const string VariablePattern = @"[A-Za-z][A-Za-z0-9]*";
         public const string ArithmeticalSymbolPattern = @"^(\+|-|\*|\/|\^)";
         public const string OpeningBracketPattern = @"^\(";
         public const string ClosingBracketPattern = @"^\)";

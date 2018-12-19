@@ -12,16 +12,26 @@ namespace FirstTask.ProgramParser
 {
     class ProgramInterpreter
     {
-        private string FilePath;
+        public static List<ParameterExpression> Parameters;
+        public static Dictionary<string, ParameterExpression> NamedParameters;
+        public static BinaryExpression Assign = null;
+
+        private string _filePath;
+
+        static ProgramInterpreter()
+        {
+            Parameters = new List<ParameterExpression>();
+            NamedParameters = new Dictionary<string, ParameterExpression>();
+        }
 
         public ProgramInterpreter()
         {
-            FilePath = @"C:\SoftServe\IndividualTasks\Program.txt";
+            _filePath = @"C:\SoftServe\IndividualTasks\Program.txt";
         }
 
         public void Run()
         {
-            var programStrings = FileReader.ReadFromFile(FilePath);
+            var programStrings = FileReader.ReadFromFile(_filePath);
             var expressions = new List<Expression>();
 
             if (programStrings == null)
@@ -54,9 +64,13 @@ namespace FirstTask.ProgramParser
                 expressions.Add(interpretedLine);
             }
 
-            var block = Expression.Block(expressions);
+            var block = Expression.Block(Parameters.ToArray(), expressions.ToArray());
+            //var block = Expression.Block(new ParameterExpression[] { Parameters[0] }, Assign, expressions[0]);
 
-            Expression.Invoke(block);
+            Expression.Lambda<Action>(block).Compile().DynamicInvoke();
+
+            //Expression.Lambda<Action>(block).Compile().DynamicInvoke();
+            //res();
         }
     }
 }

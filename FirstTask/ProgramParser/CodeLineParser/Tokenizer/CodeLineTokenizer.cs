@@ -9,13 +9,13 @@ namespace FirstTask.ProgramParser.CodeLineParser.Tokenizer
 {
     static class CodeLineTokenizer
     {
-        public const string NumberLiteralPattern = @"\d+(,\d*)?";
-        public const string BoolLiteralPattern = @"(true|false)";
-        public const string StringLiteralPattern = "(\".+\")";
-        public const string ExpressionLiteralPattern = "(#.+#)";
-        public const string VariablePattern = @"([A-Za-z][A-Za-z0-9]*)";
-        public const string OutPattern = KeyWords.Out;
-        public const string LetPattern = KeyWords.Let + @"\s+([A-Za-z][A-Za-z0-9]*)\s*:=";
+        public const string NumberLiteralPattern = @"^(\d+(,\d*)?)";
+        public const string BoolLiteralPattern = @"^(true|false)";
+        public const string StringLiteralPattern = "^(\".+\")";
+        public const string ExpressionLiteralPattern = "^(#.+#)";
+        public const string VariablePattern = @"^([A-Za-z][A-Za-z0-9]*)";
+        public const string OutPattern = @"^" + KeyWords.Out;
+        public const string LetPattern = @"^" + KeyWords.Let + @"\s+([A-Za-z][A-Za-z0-9]*)\s*:=";
         public const string BeginPattern = @"^" + KeyWords.Begin;
         public const string EndPattern = @"^" + KeyWords.End;
         public const string AssignPattern = @"^" + KeyWords.Assign;
@@ -31,18 +31,18 @@ namespace FirstTask.ProgramParser.CodeLineParser.Tokenizer
         public static readonly Regex EndRegEx = new Regex(EndPattern);
         public static readonly Regex AssignRegEx = new Regex(AssignPattern);
 
-        public static List<string> Tokenize(string input)
+        public static List<Token> Tokenize(string input)
         {
-            var splittedMembers = new List<string>();
+            var splittedMembers = new List<Token>();
             var parsers = new List<StatementTokenizer>();
 
-            parsers.Add(new StatementTokenizer(LetRegEx));
-            parsers.Add(new StatementTokenizer(OutRegEx));
-            parsers.Add(new StatementTokenizer(NumberLiteralRegEx));
-            parsers.Add(new StatementTokenizer(BoolLiteralRegEx));
-            parsers.Add(new StatementTokenizer(StringLiteralRegEx));
-            parsers.Add(new StatementTokenizer(ExpressionLiteralRegEx));
-            parsers.Add(new StatementTokenizer(VariableRegEx));
+            parsers.Add(new StatementTokenizer(ExpressionLiteralRegEx, (string s) => new Token(s, Enums.OperatorType.ExpressionLiteral)));
+            parsers.Add(new StatementTokenizer(LetRegEx, (string s) => new Token(s, Enums.OperatorType.Let)));
+            parsers.Add(new StatementTokenizer(OutRegEx, (string s) => new Token(s, Enums.OperatorType.Out)));
+            parsers.Add(new StatementTokenizer(NumberLiteralRegEx, (string s) => new Token(s, Enums.OperatorType.NumbetLiteral)));
+            parsers.Add(new StatementTokenizer(BoolLiteralRegEx, (string s) => new Token(s, Enums.OperatorType.BoolLiteral)));
+            parsers.Add(new StatementTokenizer(StringLiteralRegEx, (string s) => new Token(s, Enums.OperatorType.StringLiteral)));
+            parsers.Add(new StatementTokenizer(VariableRegEx, (string s) => new Token(s, Enums.OperatorType.Variable)));
 
             while (input.Length != 0)
             {
@@ -51,13 +51,16 @@ namespace FirstTask.ProgramParser.CodeLineParser.Tokenizer
 
                 if (currentParser == null)
                 {
+                    Console.WriteLine("Source code has incorrect statements!");
+
                     return null;
                 }
 
                 var match = currentParser.GetMatch(input);
                 currentParser.CutString(ref input, match);
+                var currentToken = currentParser.ExecuteFunction(match);
 
-                splittedMembers.Add(match);
+                splittedMembers.Add(currentToken);
             }
 
             return splittedMembers;
